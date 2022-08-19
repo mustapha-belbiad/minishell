@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/19 19:26:23 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/19 22:22:25 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char **return_cmd(char *str)
 	while(str[i] != ' ' && str[i])
 		i++;
 	i++;
-	spl[0] = ft_substr(str, 0, i);
+	spl[0] = ft_substr(str, 0, i - 1);
 	if(i == ft_strlen(str))
 	{
 		spl[1] = 0;

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/19 19:44:03 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/19 23:26:42 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,14 @@ void exit_fcnt(char *cmd)
 
 void echo_fcnt(t_cmd *cmd)
 {
-    printf("houlyaaa\n");
-    if(cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n')
+    if (cmd->cmd[1] == NULL)
+        printf("\n");
+    else if(cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n'
+        && cmd->cmd[1][2] == ' ')
     {
-        printf("3aaa \n");
-        printf("%s", cmd->cmd[1]);
+        int i = 1;
+        while(cmd->cmd[1][++i])
+            printf("%c", cmd->cmd[1][i]);
     }
     else 
         printf("%s\n", cmd->cmd[1]);
@@ -89,18 +92,21 @@ void    cd_fcnt(t_cmd *cmd)
     char *str;
 
     str = malloc(sizeof(char *));
-    str = ft_strjoin("/", cmd->cmd[1]);
-    chdir(str);
+    if (cmd->cmd[1][0] != '.')
+        str = ft_strjoin("./", cmd->cmd[1]);
+    else
+        str = ft_strdup(cmd->cmd[1]);
+    if (chdir(str) == -1)
+        printf("No such file or directory \n");
     free(str);
 }
 
 void    ft_check_builtins(t_cmd *cmd)
 {
-    printf (" === {%s} ====", cmd->cmd[0]);
     if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1) /*getcwd*/
         pwd_fcnt(cmd->cmd[0]);
-    // else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
-    //     cd_fcnt(cmd->cmd[0]);
+    else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
+        cd_fcnt(cmd);
     // else if (ft_strrrcmp(cmd, "export") == 1)
     //     return(1);
     // else if (ft_strrrcmp(cmd, "unset") == 1)
@@ -111,7 +117,7 @@ void    ft_check_builtins(t_cmd *cmd)
         exit_fcnt(cmd->cmd[0]);
     else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/
         echo_fcnt(cmd);
-    printf("houlyaaa 3333 \n");
+    //printf("houlyaaa 3333 \n");
     // else
     //     printf("command not found \n");
 }
