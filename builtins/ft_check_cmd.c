@@ -6,19 +6,18 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/19 23:26:42 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/20 17:13:42 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
+
 
 int	ft_strrrcmp(const char *s1, const char *s2)
 {
 	int	i;
 
 	i = 0;
-    // printf("--- : %s \n", s1);
-    // printf("---- : %s \n", s2);
     // if (ft_strlen(s1) != ft_strlen(s2))
     // {
     //     printf(" < %zu >   < %zu > \n", ft_strlen(s1), ft_strlen(s2));
@@ -35,9 +34,6 @@ int	ft_strrrcmp(const char *s1, const char *s2)
 	}
     if (s1[i] != s2[i])
     {
-        // printf("------ \n");
-        // printf("+++%s", s1);
-        // printf("'%c' || '%c'  \n", s1[i], s2[i]);
         return(0);
     }
     return(1);
@@ -76,8 +72,8 @@ void echo_fcnt(t_cmd *cmd)
 {
     if (cmd->cmd[1] == NULL)
         printf("\n");
-    else if(cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n'
-        && cmd->cmd[1][2] == ' ')
+    else if((cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n')
+        && (cmd->cmd[1][2] == ' ' || cmd->cmd[1][2] == '\0'))
     {
         int i = 1;
         while(cmd->cmd[1][++i])
@@ -87,13 +83,25 @@ void echo_fcnt(t_cmd *cmd)
         printf("%s\n", cmd->cmd[1]);
 }
 
+void env_fcnt(char **envv)
+{
+    int i;
+
+    i  = -1;
+    while(envv[++i])
+        printf("%s\n", envv[i]);
+}
+
 void    cd_fcnt(t_cmd *cmd)
 {
     char *str;
 
     str = malloc(sizeof(char *));
-    if (cmd->cmd[1][0] != '.')
-        str = ft_strjoin("./", cmd->cmd[1]);
+    if (cmd->cmd[1][0] == '\0')
+    {
+        str = ft_strdup("/Users/mbelbiad"); //path of HOME;
+        //printf("%s\n", str);
+    }
     else
         str = ft_strdup(cmd->cmd[1]);
     if (chdir(str) == -1)
@@ -101,7 +109,7 @@ void    cd_fcnt(t_cmd *cmd)
     free(str);
 }
 
-void    ft_check_builtins(t_cmd *cmd)
+void    ft_check_builtins(t_cmd *cmd, t_mini *mini)
 {
     if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1) /*getcwd*/
         pwd_fcnt(cmd->cmd[0]);
@@ -111,8 +119,8 @@ void    ft_check_builtins(t_cmd *cmd)
     //     return(1);
     // else if (ft_strrrcmp(cmd, "unset") == 1)
     //     return(1);
-    // else if (ft_strrrcmp(cmd, "env") == 1)
-    //     return(1);
+    else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
+        env_fcnt(envv);
     else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)
         exit_fcnt(cmd->cmd[0]);
     else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/

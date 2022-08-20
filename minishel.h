@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/19 15:23:35 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/20 19:09:40 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,26 @@ typedef struct minishel
 	int			num_pip;
 }	t_mini;
 
+typedef struct t_env
+{
+	char *envir;
+	struct t_env *next;
+}	t_env;
+
+// typedef struct	s_list {
+// 	void			*content;
+// 	struct s_list	*next;
+// }	t_list;
 
 
 int		lent_d_pointer(char **str);
 char	**get_env(char	**str);
 t_nav	*init_nav(t_nav *nav);
 
-
+char **envv;
 //--------- builtins ------
-void    ft_check_builtins(t_cmd *cmd);
+void	ft_check_builtins(t_cmd *cmd, t_mini *mini);
+int		ft_envp(char **envp);
+void	*ft_link_env(t_env *envi, char **env);
 
 #endif
