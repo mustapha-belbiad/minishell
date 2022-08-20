@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/20 19:09:40 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/20 19:26:43 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ typedef struct t_env
 	struct t_env *next;
 }	t_env;
 
-// typedef struct	s_list {
-// 	void			*content;
-// 	struct s_list	*next;
-// }	t_list;
-
 
 int		lent_d_pointer(char **str);
 char	**get_env(char	**str);
@@ -65,7 +60,7 @@ t_nav	*init_nav(t_nav *nav);
 
 char **envv;
 //--------- builtins ------
-void	ft_check_builtins(t_cmd *cmd, t_mini *mini);
+void	ft_check_builtins(t_cmd *cmd, t_env *mini);
 int		ft_envp(char **envp);
 void	*ft_link_env(t_env *envi, char **env);
 

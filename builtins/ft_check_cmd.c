@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/20 17:13:42 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/20 19:29:09 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ void echo_fcnt(t_cmd *cmd)
         printf("%s\n", cmd->cmd[1]);
 }
 
-void env_fcnt(char **envv)
+void env_fcnt(t_env *envv)
 {
-    int i;
-
-    i  = -1;
-    while(envv[++i])
-        printf("%s\n", envv[i]);
+    
+    while(envv->next != NULL)
+    {
+        printf("%s\n", envv->envir);
+        envv = envv->next;
+    }
 }
 
 void    cd_fcnt(t_cmd *cmd)
@@ -109,7 +110,7 @@ void    cd_fcnt(t_cmd *cmd)
     free(str);
 }
 
-void    ft_check_builtins(t_cmd *cmd, t_mini *mini)
+void    ft_check_builtins(t_cmd *cmd, t_env *eniv)
 {
     if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1) /*getcwd*/
         pwd_fcnt(cmd->cmd[0]);
@@ -120,7 +121,7 @@ void    ft_check_builtins(t_cmd *cmd, t_mini *mini)
     // else if (ft_strrrcmp(cmd, "unset") == 1)
     //     return(1);
     else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
-        env_fcnt(envv);
+        env_fcnt(eniv);
     else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)
         exit_fcnt(cmd->cmd[0]);
     else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/
