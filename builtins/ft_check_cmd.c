@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/21 17:00:45 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 19:44:38 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int check_exist(t_env **env, t_cmd *cmd)
     tmp = (*env);
     while((*env) != NULL)
     {
-        if (ft_strcmp(sp[0],(*env)->envir) == 1)
+        if (ft_strcmp2(sp[0],(*env)->envir) == 1)
         {   if (sp[1] == NULL)
             {
                 free(sp);
@@ -165,18 +165,12 @@ void    ft_check_Quot(t_cmd **cmd)
     char **sp;
 
     sp = ft_split((*cmd)->cmd[1], '=');
-    if (sp == NULL)
+    if (sp == NULL || sp[1] == NULL)
         return ;
-    // printf("hoplaaa ---{%s}-- > \n", sp[0]);
-    // printf("hoplaaa ---{%s}-- > \n", sp[1]);
     if (sp[1][0] == '"')
-    {
-        //printf("hoplaaa \n");
         return ;
-    }
      else
      {
-              //printf("hoplaaa =====> \n");
         sp[1] = ft_strjoin("\"", sp[1]);
         sp[1] = ft_strjoin(sp[1], "\"");
         sp[1] = ft_strjoin("=", sp[1]);
@@ -194,7 +188,6 @@ void    export_fcnt(t_cmd *cmd, t_env *env)
     tmp = env;
     if (cmd->cmd[1][0] == '\0')
     {
-        //printf("hoopla\n");
         tmp = env;
         while (tmp != NULL)
         {
@@ -205,22 +198,44 @@ void    export_fcnt(t_cmd *cmd, t_env *env)
     }
     else
     {
-        //check_exist(&env, cmd);
         if (check_exist(&env, cmd) == 1)
         {
             
             ft_check_Quot(&cmd);
             ft_list_addback(&env, ft_lstnew(cmd->cmd[1]));
         }
-        // tmp = env;
-        // while (tmp != NULL)
-        // {
-        //     printf("%s ", "declare -x");
-        //     printf("%s\n", tmp->envir);
-        //     tmp = tmp->next;
-        // }
     }
 }
+
+void    unset_fcnt(t_cmd *cmd, t_env **env)
+{
+    char **cd;
+    t_env *tmp1;
+    t_env *tmp2;
+    t_env *head;
+    
+
+    if (cmd->cmd[1][0] == '\0')
+        return ;
+    
+    head = (*env);
+    while ((*env) != NULL)
+    {
+        if (ft_strcmp(cmd->cmd[1], (*env)->envir) == 1)
+        {
+            printf("houlyaaaaaaa {%s} 2\n", cmd->cmd[1]);
+            tmp2 = (*env);
+            tmp1->next = tmp2->next;
+            //free(tmp2);
+            (*env) = head; 
+            return ;   
+        }
+        tmp1 = (*env);
+        (*env) = (*env)->next;
+    }
+    (*env) = head;
+}
+
 void    ft_check_builtins(t_cmd *cmd, t_env *eniv)
 {
     if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1) /*getcwd*/
@@ -229,8 +244,8 @@ void    ft_check_builtins(t_cmd *cmd, t_env *eniv)
         cd_fcnt(cmd);
     else if (ft_strrrcmp(cmd->cmd[0], "export") == 1)
         export_fcnt(cmd, eniv);
-    // else if (ft_strrrcmp(cmd, "unset") == 1)
-    //     return(1);
+    else if (ft_strrrcmp(cmd->cmd[0], "unset") == 1)
+        unset_fcnt(cmd, &eniv);
     else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
         env_fcnt(eniv);
     else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)

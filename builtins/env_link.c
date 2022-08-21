@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/21 13:03:59 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 18:25:08 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,29 @@ void	*ft_link_env(t_env *envi, char **env)
     //     envi = envi->next;
     // }
     return(envi);
+}
+
+int ft_strcmp2(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	char **cmd = ft_split(s2, '=');
+	while(s1[i] && cmd[0][i])
+	{
+		if(s1[i] != cmd[0][i])
+			break;
+		i++;
+	}
+	
+	if (s1[i] != cmd[0][i])
+	{
+		free(cmd);
+		return (0);
+	}
+	else 
+	{
+		free(cmd);
+		return(1);
+	}
 }
