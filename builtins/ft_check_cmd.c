@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/21 19:44:38 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 20:27:08 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,22 @@ void    export_fcnt(t_cmd *cmd, t_env *env)
     }
 }
 
+int ft_check_unset(char *cmd)
+{
+    int i;
+
+    i = -1;
+    while(cmd[++i])
+    {
+        if ((cmd[i] <= 48 && cmd[i] >= 57)
+		|| (cmd[i] <= 65 && cmd[i] >= 90)
+		|| (cmd[i] <= 97 && cmd[i] >= 122)
+		|| (cmd[i] != 95))
+		    return (0);
+    }
+    return (1);
+}
+
 void    unset_fcnt(t_cmd *cmd, t_env **env)
 {
     char **cd;
@@ -214,19 +230,20 @@ void    unset_fcnt(t_cmd *cmd, t_env **env)
     t_env *tmp2;
     t_env *head;
     
-
     if (cmd->cmd[1][0] == '\0')
         return ;
-    
+    if (ft_check_unset(cmd->cmd[1]) == 0)
+    {
+        printf("%s : not a valid identifier \n", cmd->cmd[1]);
+        return ;
+    }
     head = (*env);
     while ((*env) != NULL)
     {
         if (ft_strcmp(cmd->cmd[1], (*env)->envir) == 1)
         {
-            printf("houlyaaaaaaa {%s} 2\n", cmd->cmd[1]);
             tmp2 = (*env);
             tmp1->next = tmp2->next;
-            //free(tmp2);
             (*env) = head; 
             return ;   
         }
