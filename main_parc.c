@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 12:50:19 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 22:32:52 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@ void    change_value(t_token *token)
     i = 0;
     while(tmp)
     {
-        if(tmp->type == REDIRECT_IN || tmp->type == REDIRECT_OT
-            || tmp->type == D_REDIRECT_OT || tmp->type == D_REDIRECT_IN)
+        if(tmp->e_type == REDIRECT_IN || tmp->e_type == REDIRECT_OT
+            || tmp->e_type == D_REDIRECT_OT || tmp->e_type == D_REDIRECT_IN)
         {
-            i = tmp->type;
-            tmp->next->type = i; 
-            tmp = tmp->next;
+            if(tmp->next)
+            {
+                i = tmp->e_type;
+                tmp->next->e_type = i;
+                tmp = tmp->next;
+            }
         }
         tmp = tmp->next;
     }
@@ -41,19 +44,13 @@ int main(int ac, char **av, char **envp)
     t_cmd   *tmp1;
     t_token *tmpv;
     t_env   *eniv;
-   
+
     eniv = malloc(sizeof(t_env));
     files = NULL;
     mini = malloc(sizeof(t_mini));
     mini->env = get_env(envp);
-    
+
     eniv = ft_link_env(eniv, mini->env);
-    
-    // while (eniv->next != NULL)
-    // {
-    //     printf("%s \n", eniv->envir);//teeeeeeest;
-    //     eniv = eniv->next;
-    // }
     
     while(1)
     {
@@ -61,34 +58,16 @@ int main(int ac, char **av, char **envp)
         add_history(str);
         mini->lexer = init_lexer(str);
         mini->token = pick_tokens(mini->lexer, envp);
-        change_value(mini->token);
         tmpv = mini->token;
-        mini->parser = return_error(mini->token);
-        // printf("%s\n", mini->parser->value);
         cmd = fill_cmd(mini->token, cmd);
-        
-        //-------------------------------------------
 
-        
-         ft_check_builtins(cmd, eniv);
-
-        
-        // if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1)
-        // {
-        //     char b[1024];
-        //     printf("--------hoppla ----------------------------\n");
-        //     getcwd(b, 1024);
-        //     printf("%s \n", b);
-        // }
-
-
-        //-------------------------------------------
+        ft_check_builtins(cmd, eniv);        
         // t_token *tmp;
         // tmp = mini->token;
         // tmp = tmp->next;
         // while(tmp)
         // {
-        //     printf("{%s}  ===  %d\n", tmp->value, tmp->type);
+        //     printf("{%s}  ===  %d\n", tmp->value, tmp->e_type);
         //     tmp = tmp->next;
         // }
         // free (mini->lexer->src);
@@ -105,8 +84,8 @@ int main(int ac, char **av, char **envp)
         // while(tmp1)
         // {
         //     printf("-------------cmd------------/\n");
-        //     printf("%s\n", tmp1->cmd[0]);
-        //     printf("%s\n", tmp1->cmd[1]);
+        //     printf("{%s}\n", tmp1->cmd[0]);
+        //     printf("{%s}\n", tmp1->cmd[1]);
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 

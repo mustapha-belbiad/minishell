@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 18:25:57 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 22:33:28 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct nav
 
 typedef struct minishel
 {
-	t_parser	*parser;
 	t_token		*token;
 	t_lexer		*lexer;
 	char		**env;
@@ -58,8 +57,6 @@ int		lent_d_pointer(char **str);
 char	**get_env(char	**str);
 t_nav	*init_nav(t_nav *nav);
 
-char **envv;
-//--------- builtins ------
 void	ft_check_builtins(t_cmd *cmd, t_env *mini);
 int		ft_envp(char **envp);
 void	*ft_link_env(t_env *envi, char **env);

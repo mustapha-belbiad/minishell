@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:23:16 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 18:40:31 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/06/26 09:25:02 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 int	ft_tolower(int c)
 {
@@ -29,11 +28,8 @@ int ft_strcmp(char *s1, char *s2)
 	while(s1[i] && s2[i])
 	{
 		if(s1[i] != s2[i])
-			break;
+			return(0);
 		i++;
 	}
-	if (s1[i] != s2[i])
-		return (0);
-	else 
-		return(1);
+	return(1);
 }

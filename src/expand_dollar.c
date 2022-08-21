@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 10:54:56 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/07/01 12:33:12 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/21 04:34:41 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@
 // // 	tmp = token;
 // // 	while(tmp)
 // // 	{
-// // 		if(tmp->type == D_Q || tmp->type == CMD_WORD)
+// // 		if(tmp->e_type == D_Q || tmp->e_type == CMD_WORD)
 // // 		{
 // // 			from_z_t_d = get_real_value(tmp->value, env);
 // // 			printf("from  =================; %s\n", from_z_t_d);
@@ -138,7 +138,7 @@
 // 	i = 0;
 // 	while(tmp)
 // 	{
-// 		if(tmp->type == D_Q || tmp->type == CMD_WORD)
+// 		if(tmp->e_type == D_Q || tmp->e_type == CMD_WORD)
 // 		{
 // 			if(check_ther_is_doll(tmp->value) == -1)
 // 				break;

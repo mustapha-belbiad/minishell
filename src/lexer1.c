@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 23:44:33 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/18 14:30:21 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/21 21:17:47 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void    check_after_space(t_lexer *lexer, t_token *token)
     if(lexer->c <= 32)
     {
         lexer->j = lexer->i;
-        while(lexer->src[lexer->j] <= 32)
+        while(lexer->src[lexer->j] <= 32 && lexer->src[lexer->j])
             lexer->j++;
         if(lexer->src[lexer->j] == '\'' || lexer->src[lexer->j] == '"'
             || lexer->c != '\0')
@@ -105,8 +105,6 @@ void    pick_bitwen_dq(t_lexer *lexer, t_token *token, char **env)
         free(c);
 		lexer_advance(lexer);
     }
-    
-    // lexer_advance(lexer);
     token_add_back(&token, value, D_Q);
     lexer_advance(lexer);
     check_after_space(lexer, token);

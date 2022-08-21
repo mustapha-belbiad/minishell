@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 16:41:57 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/07/02 11:40:27 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/21 01:10:10 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,24 @@ int	stlen(char *str)
 	return(i);
 }
 
+int	ft_strncmpp(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while(str[i] != c)
+		i++;
+	return(i);
+}
+
+int test_cmp(char *str, char *str1)
+{
+	if(ft_strlen(str) <= ft_strncmpp(str1, '='))
+		return(ft_strncmpp(str1, '='));
+	else
+		return(ft_strlen(str));
+}
+
 char	*check_env(char *str, char **env)
 {
 	int		i;
@@ -29,9 +47,9 @@ char	*check_env(char *str, char **env)
 	i = 0;
 	while(env[i])
 	{
-		if(ft_strncmp(env[i], str, ft_strlen(str)) == 0)
+		if(ft_strncmp(env[i], str, test_cmp(str, env[i])) == 0)
 		{
-			str = ft_substr(env[i], ft_strlen(str) + 1, ft_strlen(env[i]));
+			str = ft_substr(env[i], ft_strlen(str) + 1 , ft_strlen(env[i]));
 			return(str);
 		}
 		i++;
@@ -87,6 +105,7 @@ char	*expand2(t_lexer *lexer, char **env)
 		lexer_advance(lexer);
 		i++;
 	}
+	str[i] = '\0';
 	real_value = check_env(str, env);
 	lexer_back(lexer);
 	return(real_value);

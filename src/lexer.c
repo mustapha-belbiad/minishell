@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:50:32 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/07/01 22:12:48 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/21 21:22:58 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ char	*take_id(t_lexer *lexer, t_token *token, char **env)
 }
 
 void	lexer_advance_with(t_lexer *lexer, t_token *token, char *value,
-	int type)
+	int e_type)
 {
 	if(lexer->src[lexer->i] != '\0')
 		lexer_advance(lexer);
-	token_add_back(&token, value, type);
+	token_add_back(&token, value, e_type);
 }
 
 t_token	*pick_tokens(t_lexer *lexer, char **env)

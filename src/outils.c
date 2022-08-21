@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:27:43 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/20 23:23:27 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/20 23:21:29 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int eroor_pip(t_lexer *lexer, char c)
 		return(1);
 	return(0);
 }
+
 
 void	check_after_w(t_token *token, t_lexer *lexer)
 {

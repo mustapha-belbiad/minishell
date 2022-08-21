@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/21 20:27:08 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 22:56:52 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_strrrcmp(const char *s1, const char *s2)
     //     return(0);
     // }
 	while ((s1[i] != '\0' && s2[i] != '\0'))
+    
 	{
 		if (s1[i] != s2[i])
         {
@@ -132,33 +133,6 @@ void    cd_fcnt(t_cmd *cmd)
         printf("No such file or directory \n");
     free(str);
 }
-int check_exist(t_env **env, t_cmd *cmd)
-{
-    char **sp;
-   t_env *tmp;
-    
-    sp = ft_split(cmd->cmd[1], '=');
-    tmp = (*env);
-    while((*env) != NULL)
-    {
-        if (ft_strcmp2(sp[0],(*env)->envir) == 1)
-        {   if (sp[1] == NULL)
-            {
-                free(sp);
-                return(0);
-            }
-            free((*env)->envir);
-            (*env)->envir = ft_strdup(cmd->cmd[1]);
-            (*env) = tmp;
-            free(sp);
-            return(0);
-        }
-        (*env) = (*env)->next;
-    }
-    free(sp);
-    (*env) = tmp;
-    return(1);
-}
 
 void    ft_check_Quot(t_cmd **cmd)
 {
@@ -176,15 +150,47 @@ void    ft_check_Quot(t_cmd **cmd)
         sp[1] = ft_strjoin("=", sp[1]);
         free((*cmd)->cmd[1]);
         (*cmd)->cmd[1]= ft_strjoin(sp[0], sp[1]);
+        printf(" -{%s}- \n",  (*cmd)->cmd[1]);
         return ;
-     }
-
+    }
 }
+
+int check_exist(t_env **env, t_cmd *cmd)
+{
+    char **sp;
+   t_env *tmp;
+    
+    sp = ft_split(cmd->cmd[1], '=');
+    tmp = (*env);
+    while((*env) != NULL)
+    {
+        if (ft_strcmp2(sp[0],(*env)->envir) == 1)
+        {   
+            if (sp[1] == NULL)
+            {
+                free(sp);
+                return(0);
+            }
+            free((*env)->envir);
+            ft_check_Quot(&cmd);
+            (*env)->envir = ft_strdup(cmd->cmd[1]);
+            (*env) = tmp;
+            free(sp);
+            return(0);
+        }
+        (*env) = (*env)->next;
+    }
+    free(sp);
+    (*env) = tmp;
+    return(1);
+}
+
 
 void    export_fcnt(t_cmd *cmd, t_env *env)
 {
     t_env *tmp;
-
+    
+    printf(" 666 :==== %s === \n", cmd->cmd[1]);
     tmp = env;
     if (cmd->cmd[1][0] == '\0')
     {
@@ -200,8 +206,9 @@ void    export_fcnt(t_cmd *cmd, t_env *env)
     {
         if (check_exist(&env, cmd) == 1)
         {
-            
+            printf(" 1 :==== %s === \n", cmd->cmd[1]);
             ft_check_Quot(&cmd);
+            printf("2 : ==== %s === \n", cmd->cmd[1]);
             ft_list_addback(&env, ft_lstnew(cmd->cmd[1]));
         }
     }
