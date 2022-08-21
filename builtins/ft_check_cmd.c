@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/20 19:29:09 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 17:00:45 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,36 @@ void echo_fcnt(t_cmd *cmd)
         printf("%s\n", cmd->cmd[1]);
 }
 
+int ft_check_env(char *env)
+{
+    int i;
+
+    i = -1;
+    while(env[++i])
+    {
+        if (env[i] == '=')
+            break;
+    }
+    if (env[i] == '=')
+        return(1);
+    else
+        return(0);
+}
+
 void env_fcnt(t_env *envv)
 {
+    t_env *tmp;
     
-    while(envv->next != NULL)
+    tmp = envv;
+    while(tmp->next != NULL)
     {
-        printf("%s\n", envv->envir);
-        envv = envv->next;
+        if (ft_check_env(tmp->envir) == 0)
+            tmp = tmp->next;
+        else 
+        {
+            printf("%s\n", tmp->envir);
+            tmp = tmp->next;
+        }
     }
 }
 
@@ -109,15 +132,103 @@ void    cd_fcnt(t_cmd *cmd)
         printf("No such file or directory \n");
     free(str);
 }
+int check_exist(t_env **env, t_cmd *cmd)
+{
+    char **sp;
+   t_env *tmp;
+    
+    sp = ft_split(cmd->cmd[1], '=');
+    tmp = (*env);
+    while((*env) != NULL)
+    {
+        if (ft_strcmp(sp[0],(*env)->envir) == 1)
+        {   if (sp[1] == NULL)
+            {
+                free(sp);
+                return(0);
+            }
+            free((*env)->envir);
+            (*env)->envir = ft_strdup(cmd->cmd[1]);
+            (*env) = tmp;
+            free(sp);
+            return(0);
+        }
+        (*env) = (*env)->next;
+    }
+    free(sp);
+    (*env) = tmp;
+    return(1);
+}
 
+void    ft_check_Quot(t_cmd **cmd)
+{
+    char **sp;
+
+    sp = ft_split((*cmd)->cmd[1], '=');
+    if (sp == NULL)
+        return ;
+    // printf("hoplaaa ---{%s}-- > \n", sp[0]);
+    // printf("hoplaaa ---{%s}-- > \n", sp[1]);
+    if (sp[1][0] == '"')
+    {
+        //printf("hoplaaa \n");
+        return ;
+    }
+     else
+     {
+              //printf("hoplaaa =====> \n");
+        sp[1] = ft_strjoin("\"", sp[1]);
+        sp[1] = ft_strjoin(sp[1], "\"");
+        sp[1] = ft_strjoin("=", sp[1]);
+        free((*cmd)->cmd[1]);
+        (*cmd)->cmd[1]= ft_strjoin(sp[0], sp[1]);
+        return ;
+     }
+
+}
+
+void    export_fcnt(t_cmd *cmd, t_env *env)
+{
+    t_env *tmp;
+
+    tmp = env;
+    if (cmd->cmd[1][0] == '\0')
+    {
+        //printf("hoopla\n");
+        tmp = env;
+        while (tmp != NULL)
+        {
+            printf("%s ", "declare -x");
+            printf("%s\n", tmp->envir);
+            tmp = tmp->next;
+        }
+    }
+    else
+    {
+        //check_exist(&env, cmd);
+        if (check_exist(&env, cmd) == 1)
+        {
+            
+            ft_check_Quot(&cmd);
+            ft_list_addback(&env, ft_lstnew(cmd->cmd[1]));
+        }
+        // tmp = env;
+        // while (tmp != NULL)
+        // {
+        //     printf("%s ", "declare -x");
+        //     printf("%s\n", tmp->envir);
+        //     tmp = tmp->next;
+        // }
+    }
+}
 void    ft_check_builtins(t_cmd *cmd, t_env *eniv)
 {
     if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1) /*getcwd*/
         pwd_fcnt(cmd->cmd[0]);
     else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
         cd_fcnt(cmd);
-    // else if (ft_strrrcmp(cmd, "export") == 1)
-    //     return(1);
+    else if (ft_strrrcmp(cmd->cmd[0], "export") == 1)
+        export_fcnt(cmd, eniv);
     // else if (ft_strrrcmp(cmd, "unset") == 1)
     //     return(1);
     else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/20 19:17:38 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 12:50:19 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int main(int ac, char **av, char **envp)
         //-------------------------------------------
 
         
-        ft_check_builtins(cmd, eniv);
+         ft_check_builtins(cmd, eniv);
 
         
         // if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1)

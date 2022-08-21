@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/20 19:26:43 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/20 23:05:38 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ char **envv;
 void	ft_check_builtins(t_cmd *cmd, t_env *mini);
 int		ft_envp(char **envp);
 void	*ft_link_env(t_env *envi, char **env);
-
+void	ft_list_addback(t_env **lst, t_env *new);
+t_env	*ft_lstnew(void *env);
 #endif

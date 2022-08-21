@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/20 19:10:18 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 13:03:59 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_env	*ft_lstnew(void *env)
 void	ft_list_addback(t_env **lst, t_env *new)
 {
 	t_env	*tmp;
-
+	
     if (*lst == NULL)
         *lst = new;
     else

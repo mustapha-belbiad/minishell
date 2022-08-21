@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:27:43 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/18 14:29:48 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/20 23:23:27 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,19 @@ int eroor_pip(t_lexer *lexer, char c)
 
 void	check_after_w(t_token *token, t_lexer *lexer)
 {
-	lexer->j = lexer->i;
-	while(lexer->src[lexer->j] && lexer->src[lexer->j] <= 32)
-		lexer->j++;
-	if(check_special_c(lexer->src[lexer->j]) == 1)
+	if(lexer->c == ' ')
+	{
+		lexer->j = lexer->i;
+		while(lexer->src[lexer->j] && lexer->src[lexer->j] <= 32)
+			lexer->j++;
+		if(check_special_c(lexer->src[lexer->j]) == 1)
+			token_add_back(&token, " ", SPACE);
+		else if(lexer->src[lexer->j] == '"' ||
+			lexer->src[lexer->j] == '\'')
 		token_add_back(&token, " ", SPACE);
-	else if(lexer->src[lexer->j] == '"' ||
-		lexer->src[lexer->j] == '\'')
-	token_add_back(&token, " ", SPACE);
-	lexer->j = 0;
+		lexer->j = 0;
+	}
+	
 }
 
 t_nav	*init_nav(t_nav *nav)
