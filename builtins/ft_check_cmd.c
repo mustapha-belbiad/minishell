@@ -6,11 +6,21 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/21 22:56:52 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/22 21:14:52 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
+
+// void	ft_free(char	**cmd)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (cmd[i])
+// 		free(cmd[i++]);
+// 	free(cmd);
+// }
 
 
 int	ft_strrrcmp(const char *s1, const char *s2)
@@ -69,20 +79,90 @@ void exit_fcnt(char *cmd)
     exit(1);
 }
 
+int    ft_check_echo(t_cmd *cmd)
+{
+    char **check;
+    int i;
+    int j;
+    int po;
+
+    i = 0;
+    po = 0;
+    while (cmd->cmd[1][i])
+    {
+        if(cmd->cmd[1][i] == '-' && cmd->cmd[1][i + 1] == 'n')
+        {
+            // if (cmd->cmd[1][i + 1] != 'n' && cmd->cmd[i + 2] != ' ')
+            //     return (0);
+            j = i + 1;
+            while(cmd->cmd[1][j] == 'n')
+                j++;
+            i = j;
+            if (cmd->cmd[1][i] != ' ')
+                return (0);
+            // if (cmd->cmd[1][i] == '-' ||)
+            //     return(0);
+        }
+       // i = j;
+        if (cmd->cmd[1][i] != ' ')
+            break;
+        else
+            i++; 
+    }
+    if (cmd->cmd[1][i] != ' ')
+        return (i);
+    else 
+        return (0);
+    // i = 0;    
+    // check = ft_split(cmd->cmd[1], ' ');
+    // while (check[i])
+    // {
+    //     j = 0;
+    //     while (check[i][j])
+    //     {
+    //         if (check[i][j] == '-' && check[i][j + 1] == 'n'
+    //             && check[i][j + 2] == ' ')
+    //         {
+    //             while(check[i][j + 1] == 'n')
+    //                 j++;
+    //         }    
+    //         j++;    
+    //     }
+    //     if
+    //     i++;
+    // }
+    
+}
+
 void echo_fcnt(t_cmd *cmd)
 {
+    int i;
+    
     if (cmd->cmd[1] == NULL)
         printf("\n");
-    else if((cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n')
-        && (cmd->cmd[1][2] == ' ' || cmd->cmd[1][2] == '\0'))
+    i = ft_check_echo(cmd);
+    if (i == 0)
     {
-        int i = 1;
-        while(cmd->cmd[1][++i])
-            printf("%c", cmd->cmd[1][i]);
+        while (cmd->cmd[1][i])
+            printf("%c", cmd->cmd[1][i++]);
+        printf("\n");
     }
     else 
-        printf("%s\n", cmd->cmd[1]);
-}
+    {
+        while (cmd->cmd[1][i])
+            printf("%c", cmd->cmd[1][i++]);
+    }
+   // printf("====== > {%s} \n", cmd->cmd[1]); //&& (cmd->cmd[1][2] == ' ' || cmd->cmd[1][2] == '\0'))
+    // if((cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n')
+    //     && (cmd->cmd[1][2] == ' ' || cmd->cmd[1][2] == '\0'))
+    // {
+    //     int i = 1;
+    //     while(cmd->cmd[1][++i])
+    //         printf("%c", cmd->cmd[1][i]);
+    // }
+    // else 
+    //     printf("%s\n", cmd->cmd[1]);
+ }
 
 int ft_check_env(char *env)
 {
@@ -100,21 +180,34 @@ int ft_check_env(char *env)
         return(0);
 }
 
-void env_fcnt(t_env *envv)
+void    ft_remove_Quot(t_env **cmd)
+{
+    char **sp;
+
+    sp = ft_split((*cmd)->envir, '"');
+    if (sp == NULL || sp[1] == NULL)
+        return ;
+        (*cmd)->envir = ft_strjoin(sp[0], sp[1]);
+}
+
+t_env *env_fcnt(t_env *envv)
 {
     t_env *tmp;
     
     tmp = envv;
-    while(tmp->next != NULL)
+    while(envv != NULL)
     {
-        if (ft_check_env(tmp->envir) == 0)
-            tmp = tmp->next;
+        if (ft_check_env(envv->envir) == 0)
+            envv = envv->next;
         else 
         {
-            printf("%s\n", tmp->envir);
-            tmp = tmp->next;
+            ft_remove_Quot(&envv);
+            printf("%s\n", envv->envir);
+            envv = envv->next;
         }
     }
+    envv = tmp;
+    return (envv);
 }
 
 void    cd_fcnt(t_cmd *cmd)
@@ -186,7 +279,7 @@ int check_exist(t_env **env, t_cmd *cmd)
 }
 
 
-void    export_fcnt(t_cmd *cmd, t_env *env)
+t_env    *export_fcnt(t_cmd *cmd, t_env *env)
 {
     t_env *tmp;
     
@@ -212,6 +305,7 @@ void    export_fcnt(t_cmd *cmd, t_env *env)
             ft_list_addback(&env, ft_lstnew(cmd->cmd[1]));
         }
     }
+    return (env);
 }
 
 int ft_check_unset(char *cmd)
@@ -267,11 +361,11 @@ void    ft_check_builtins(t_cmd *cmd, t_env *eniv)
     else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
         cd_fcnt(cmd);
     else if (ft_strrrcmp(cmd->cmd[0], "export") == 1)
-        export_fcnt(cmd, eniv);
+       eniv =  export_fcnt(cmd, eniv);
     else if (ft_strrrcmp(cmd->cmd[0], "unset") == 1)
         unset_fcnt(cmd, &eniv);
     else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
-        env_fcnt(eniv);
+        eniv = env_fcnt(eniv);
     else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)
         exit_fcnt(cmd->cmd[0]);
     else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 22:33:28 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/27 03:33:36 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+# include <sys/fcntl.h>
+# include <stddef.h>
 
 typedef struct nav
 {
@@ -46,22 +48,28 @@ typedef struct minishel
 	int			num_pip;
 }	t_mini;
 
+
 typedef struct t_env
 {
 	char *envir;
 	struct t_env *next;
 }	t_env;
 
-
 int		lent_d_pointer(char **str);
 char	**get_env(char	**str);
 t_nav	*init_nav(t_nav *nav);
 
+//----------- builtins ------------------------------
 void	ft_check_builtins(t_cmd *cmd, t_env *mini);
 int		ft_envp(char **envp);
 void	*ft_link_env(t_env *envi, char **env);
 void	ft_list_addback(t_env **lst, t_env *new);
 t_env	*ft_lstnew(void *env);
 int ft_strcmp2(char *s1, char *s2);
+
+//---------------------------------------------------
+
+//-------- execute ----------------------------------
+void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp);
 
 #endif

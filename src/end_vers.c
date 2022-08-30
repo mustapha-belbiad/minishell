@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   end_vers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 22:23:25 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/29 22:53:59 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,13 @@ t_file	*check_if(t_file *file, char *file_name, int e_type)
 char	**return_cmd(char *str)
 {
 	char	**spl;
-	int		i;
+	// int i = 0;
 
-	i = 0;
-	if (!str)
-		return (NULL);
-	spl = malloc(sizeof(char *) * 3);
-	while (str[i] != ' ' && str[i])
-		i++;
-	i++;
-	spl[0] = ft_substr(str, 0, i - 1);
-	if (i == ft_strlen(str))
-	{
-		spl[1] = 0;
-	}
-	else
-	{
-		spl[1] = ft_substr(str, i, ft_strlen(str));
-		spl[2] = NULL;
-	}
+	spl = ft_split(str, ' ');	
+	// while(spl[i])
+	// 	printf("-- {%s} --\n", spl[i++]);
+	// printf("-- {%s} --\n", spl[1]);
+	// printf("-- {%s} --\n", spl[2]);
 	return (spl);
 }
 
@@ -150,7 +138,10 @@ t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
 	char	*str;
 
 	if (red_flag(token) == 1)
+	{
+		printf("syntax error\n");
 		return(NULL);
+	}	
 	tmp = token;
 	file = NULL;
 	str = ft_strdup("\0");
