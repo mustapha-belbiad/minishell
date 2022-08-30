@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/30 04:16:39 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:13:07 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,28 +104,28 @@ int main(int ac, char **av, char **envp)
         //     free(tmp);
         // }
         // free(str);
-        tmp1 = cmd;
-        int i;
-        while(tmp1)
-        {
-            i = 0;
-            printf("-------------cmd------------/\n");
-            // while(cmd->cmd[i])
-            //     printf("----");
-            t_file *tmpf = tmp1->file ;
-            printf("-------------file------------/\n");
+        // tmp1 = cmd;
+        // int i;
+        // while(tmp1)
+        // {
+        //     i = 0;
+        //     printf("-------------cmd------------/\n");
+        //     // while(cmd->cmd[i])
+        //     //     printf("----");
+        //     t_file *tmpf = tmp1->file ;
+        //     printf("-------------file------------/\n");
 
-            while (tmpf)
-            {
-                printf("%s\n", tmpf->file_name);
-                printf("%d\n", tmpf->e_type);
-                tmpf =  tmpf->next;
-            }
-            printf("-------------------------/\n");
+        //     while (tmpf)
+        //     {
+        //         printf("%s\n", tmpf->file_name);
+        //         printf("%d\n", tmpf->e_type);
+        //         tmpf =  tmpf->next;
+        //     }
+        //     printf("-------------------------/\n");
 
-             printf("-------------------------\n");
-            tmp1 = tmp1->next;
-        }
+        //      printf("-------------------------\n");
+        //     tmp1 = tmp1->next;
+        // }
         mini->token = NULL;
         cmd = NULL;
         // free(str);

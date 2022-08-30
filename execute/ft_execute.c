@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/30 04:06:12 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/30 18:09:20 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ char	**get_the_path(t_cmd *cmd, t_env *env)
 		return (Pth);
 	}
 	i = -1;
-	while(Pth[++i])
-		printf(" {%s} \n", Pth[i]);
+	// while(Pth[++i])
+	// 	printf(" {%s} \n", Pth[i]);
 	return (Pth);
 }
 
@@ -131,68 +131,60 @@ int	append_mode(char	*argv)
 	return (out);
 }
 
-// void her_doc()
-// {
+void here_doc(char *file)
+{
+	char *str;
 	
-// }
+	while (1)
+	{
+		str =readline(">");
+		if (str != NULL)
+			str = ft_strjoin(str, "\n");
+		if (ft_strcmp(file, str) != 0 && str != NULL)
+			break;
+	}
+}
 
 void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 {
-	int id;
+	int fd[2];
 	char **comd;
+	t_file *tmp;
 	int i;
 	int input;
 	int output;
-	// if (pipe(fd) == -1)
-	// {
-    //      write (1, "Error in pipe\n", 9);
-	// 	return ;
-	// }
+	t_cmd *tmp1;
+
+	tmp1 = cmd;
 	
-	// int fd[2];
-	// if (pipe(fd) == -1)
-	// {
-	// 	write (1, "Error in pipe\n", 9);
-	// 	return ;
-	// }
-	//comd = get_the_path(cmd, env);
-	// if (cmd->cmd == NULL)
-	// 	return ;
-	// i = -1;
-	// while (cmd)
-	// {
-	// 	if (cmd->file->e_type == 5)
-	// 	{
-	// 		input = check_file(cmd->file->file_name);
-	// 		if (input == -1)
-	// 		{
-	// 			perror ("open");
-	// 			return ;
-	// 		}
-	// 		printf("input file is : %s \n", cmd->file->file_name);
-	// 	}
-	// 	else if (cmd->file->e_type == 6)
-	// 	{
-	// 		output = file_out(cmd->file->file_name);
-	// 		printf("out put file is : %s \n", cmd->file->file_name); 
-	// 	}
-	// 	cmd = cmd->next;
-	// }
-	while(cmd != NULL)
+	while (tmp1->next != NULL)
 	{
-		comd = get_the_path(cmd, env);
-		if (!comd)
+		if (pipe(fd) == -1)
 		{
-			printf("hooooopla \n");
+			printf("-- {%s} -- \n", tmp1->cmd[0]);
+			perror("pipe error");
 			return ;
 		}
-		// printf("------{%s}---- \n", comd[0]);
-		// printf("------{%s}---- \n", comd[1]);
+		tmp1 = tmp1->next;
+	}
+	//comd = get_the_path(cmd, env);
+	input = -1;
+	while(cmd != NULL)
+	{
 		i = fork();
 		if (i == 0)
 		{
-			int j = 0;
-			t_file *tmp = cmd->file;
+			if (input == -1)
+			{
+				close(fd[0]);
+				dup2(fd[1], 1);
+			}
+			else 
+			{
+				dup2(fd[0], 0);
+				dup2(fd[1], 1);
+			}
+			tmp = cmd->file;
 			while (tmp)
 			{
 				//printf(" ===={%s}=== \n", cmd->cmd[i]);
@@ -206,34 +198,50 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 					}
 					dup2(input, 0);
 				// dup2(1, 1);
-			//printf("input file is : %s \n", tmp->file_name);
+				//printf("input file is : %s \n", tmp->file_name);
 				}
-				if (tmp->e_type == 6)
+				else if (tmp->e_type == 6)
 				{
 					output = file_out(tmp->file_name);
 					dup2(output, 1);
 			//printf("out put file is : %s \n", cmd->file->file_name); 
 				}
-				if (tmp->e_type == 8)
+				else if (tmp->e_type == 8)
 				{
 					output = append_mode(tmp->file_name);
 					dup2(output, 1);
 					printf("out put file is : %s \n", cmd->file->file_name); 
 				}
-				// if (tmp->e_type == 7) // herdoc
-				// {
-				// 	output = append_mode(tmp->file_name);
+				else if (tmp->e_type == 7) // herdoc
+				{
+					//printf(" ======> hani hna -------- \n");
+					here_doc(tmp->file_name);
+					if (cmd->cmd[0] == NULL)
+						return ;
 				// 	dup2(output, 1);
 				// 	printf("out put file is : %s \n", cmd->file->file_name); 
-				// }
+				}
 				tmp = tmp->next;
 			}
+			printf(" ===== hopla 111 \n");
+			comd = get_the_path(cmd, env);
+			if (!comd)
+			{
+				printf("{%s}\n", comd[0]);
+				printf("hooooopla \n");
+				return ;
+			}
+			printf(" ===== hopla \n");
 			execve(comd[0], comd, envp);
 		}
 		wait(NULL);
-		free(comd);
+		//close(fd[1]);
+		
+		//free(comd);
 		cmd = cmd->next;
 	}
+	close(fd[0]);
+	close (fd[1]);
 	
 	// while(comd[++i])
 	// {
