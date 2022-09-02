@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/30 18:09:20 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/02 03:34:52 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,165 +103,118 @@ char	**get_the_path(t_cmd *cmd, t_env *env)
 	return (Pth);
 }
 
-int	check_file(char	*argv)
-{
-	int	check;
-
-	check = open(argv, O_RDONLY);
-	return (check);
-}
-
-int	file_out(char	*argv)
-{
-	int	out;
-
-	out = open(argv, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (out == -1)
-		perror ("open");
-	return (out);
-}
-
-int	append_mode(char	*argv)
-{
-	int	out;
-
-	out = open(argv, O_CREAT | O_WRONLY | O_APPEND, 0777);
-	if (out == -1)
-		perror ("open");
-	return (out);
-}
-
-void here_doc(char *file)
-{
-	char *str;
-	
-	while (1)
-	{
-		str =readline(">");
-		if (str != NULL)
-			str = ft_strjoin(str, "\n");
-		if (ft_strcmp(file, str) != 0 && str != NULL)
-			break;
-	}
-}
-
 void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 {
 	int fd[2];
+	int in_fd;
 	char **comd;
 	t_file *tmp;
 	int i;
-	int input;
-	int output;
 	t_cmd *tmp1;
 
 	tmp1 = cmd;
 	
-	while (tmp1->next != NULL)
-	{
-		if (pipe(fd) == -1)
-		{
-			printf("-- {%s} -- \n", tmp1->cmd[0]);
-			perror("pipe error");
-			return ;
-		}
-		tmp1 = tmp1->next;
-	}
+	// while (tmp1->next != NULL)
+	// {
+	// 	if (pipe(fd) == -1)
+	// 	{
+	// 		printf("-- {%s} -- \n", tmp1->cmd[0]);
+	// 		perror("pipe error");
+	// 		return ;
+	// 	}
+	// 	tmp1 = tmp1->next;
+	// }
 	//comd = get_the_path(cmd, env);
-	input = -1;
+	in_fd = -1;
+	// pipe (fd);
 	while(cmd != NULL)
 	{
+		if (cmd->next != NULL)
+		{
+			//printf("=======> {1}\n ");
+			pipe (fd);
+		}
 		i = fork();
 		if (i == 0)
 		{
-			if (input == -1)
+			// dup2(in_fd, 0);
+			// //dup2(fd[1], 1);
+			// //close (in_fd);
+			// close(fd[0]);
+			if (in_fd == -1)
 			{
+				printf("hola\n");
 				close(fd[0]);
 				dup2(fd[1], 1);
+				close(fd[1]);
 			}
-			else 
+			else if (cmd->next == NULL)
 			{
+				//printf(" ===> hola  {%s}\n", cmd->cmd[0]);
+				close(fd[1]);
+				dup2(fd[0], 0);
+				dup2(1, 1);
+				close(fd[0]);
+			}
+			else
+			{
+				//printf("hola 2\n");
 				dup2(fd[0], 0);
 				dup2(fd[1], 1);
+				close(fd[0]);
+				close(fd[1]);
 			}
-			tmp = cmd->file;
-			while (tmp)
-			{
-				//printf(" ===={%s}=== \n", cmd->cmd[i]);
-				if (tmp->e_type == 5)
-				{
-					input = check_file(tmp->file_name);
-					if (input == -1)
-					{
-						perror ("open");
-						return ;
-					}
-					dup2(input, 0);
-				// dup2(1, 1);
-				//printf("input file is : %s \n", tmp->file_name);
-				}
-				else if (tmp->e_type == 6)
-				{
-					output = file_out(tmp->file_name);
-					dup2(output, 1);
-			//printf("out put file is : %s \n", cmd->file->file_name); 
-				}
-				else if (tmp->e_type == 8)
-				{
-					output = append_mode(tmp->file_name);
-					dup2(output, 1);
-					printf("out put file is : %s \n", cmd->file->file_name); 
-				}
-				else if (tmp->e_type == 7) // herdoc
-				{
-					//printf(" ======> hani hna -------- \n");
-					here_doc(tmp->file_name);
-					if (cmd->cmd[0] == NULL)
-						return ;
-				// 	dup2(output, 1);
-				// 	printf("out put file is : %s \n", cmd->file->file_name); 
-				}
-				tmp = tmp->next;
-			}
-			printf(" ===== hopla 111 \n");
+			  
+			// if (redi_heredoc(cmd) == 0)
+			// 	return ;
 			comd = get_the_path(cmd, env);
 			if (!comd)
 			{
-				printf("{%s}\n", comd[0]);
+				//printf("{%s}\n", comd[0]);
 				printf("hooooopla \n");
 				return ;
 			}
-			printf(" ===== hopla \n");
+			// if (cmd->next == NULL)
+			// 	dup2(1, 1);
+			//printf ("{%s}\n", cmd->cmd[0]);
+			// close(fd[0]);
+			// close(fd[1]);
 			execve(comd[0], comd, envp);
 		}
-		wait(NULL);
-		//close(fd[1]);
+		// else 
+		// {
+	 	in_fd = 0;
+			// close(fd[0]);
+			// close(fd[1]);
+		// }
+		
+		cmd = cmd->next;
 		
 		//free(comd);
-		cmd = cmd->next;
 	}
 	close(fd[0]);
-	close (fd[1]);
-	
-	// while(comd[++i])
+	close(fd[1]);
+	while(wait(NULL) != -1)
+		;
+	// i = fork();
+	// if (i == 0)
 	// {
-	// 	pipe(fd);
-		
-	// 	printf(" ----- {%s} \n", comd[i]);
-		
-	// 	execve(comd[0], comd, NULL);
+	// 	dup2(in_fd, 0);
+	// 	close(in_fd);
+	// 	// dup2(1, 1);
+	// 	// close(1);
+	// 	comd = get_the_path(cmd, env);
+	// 	if (!comd)
+	// 	{
+	// 			//printf("{%s}\n", comd[0])
+	// 		printf("hooooopla \n");
+	// 		return ;
+	// 	}
+	// 	// close(in_fd);
+	// 	// close(fd[1]);
+	// 	printf("hoplaaa  =%d=    {%s}\n", in_fd, cmd->cmd[0]);
+	// 	execve(comd[0], comd, envp);
 	// }
-    // id = fork();
-	// if (id == 0)
-	// {
-	// 	printf(" ---- { %s }\n", comd[0]);
-	// 	printf(" ---- {%s}\n", comd[1]);
-	// 	// dup2(0 ,0);
-	// 	dup2(0, 1);
-	// 	printf(" -- {%s} -- \n", comd[0]);
-	//   	execve(comd[0], comd, envp);
-	// }
-	// close(fd[0]);
-	// close(fd[1]);
-    // wait(NULL);
+	// wait(NULL);
+	//close(in_fd);
 } 

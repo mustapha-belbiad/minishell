@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/30 16:13:07 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/30 22:31:21 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ int main(int ac, char **av, char **envp)
         // }
         mini->token = NULL;
         cmd = NULL;
-        // free(str);
+        free(str);
     }
 }

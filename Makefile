@@ -15,7 +15,8 @@ SRC = main_parc.c \
 	./src/end_vers.c \
 	./builtins/ft_check_cmd.c \
 	./builtins/env_link.c \
-	./execute/ft_execute.c
+	./execute/ft_execute.c \
+	./execute/redi_here.c
 
 FLAGS = -Wall -Wextra -Werror 
 ARG = -o

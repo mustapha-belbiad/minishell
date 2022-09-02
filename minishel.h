@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/27 03:33:36 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:17:21 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ int ft_strcmp2(char *s1, char *s2);
 
 //-------- execute ----------------------------------
 void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp);
+int redi_heredoc(t_cmd *cmd);
 
 #endif

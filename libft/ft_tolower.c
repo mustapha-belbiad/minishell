@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:23:16 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/06/26 09:25:02 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/08/30 22:06:35 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_tolower(int c)
 int ft_strcmp(char *s1, char *s2)
 {
 	int i;
-
+	
 	i = 0;
 	while(s1[i] && s2[i])
 	{
