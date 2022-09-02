@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/02 03:34:52 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/02 21:29:40 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ char	**get_the_path(t_cmd *cmd, t_env *env)
 	int i;
 
 	i = 0;
-	while (cmd->cmd[i])
-	{
-		printf ("cmd is : %s\n", cmd->cmd[i++]);
-	}
+	// while (cmd->cmd[i])
+	// {
+	// 	printf ("cmd is : %s\n", cmd->cmd[i++]);
+	// }
 	Path = strrr(env);
 	Path = ft_substr(Path, 6, ft_strlen(Path));
 	str= ft_split(Path, ':');
@@ -102,6 +102,28 @@ char	**get_the_path(t_cmd *cmd, t_env *env)
 	// 	printf(" {%s} \n", Pth[i]);
 	return (Pth);
 }
+void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, char **envp)
+{
+	char **comd;
+	
+	close(fd[0]);
+	if (i != size -1)
+	{
+		dup2(fd[1], 1);
+		close(fd[1]);
+	}
+	// dup2 outfils
+	if (in_fd != -1)
+	{
+		dup2(in_fd, 0);
+		close(in_fd);
+	}
+	//dup2 infils
+	// if (redi_heredoc(cmd) == 0)
+	// 	return ;
+	comd = get_the_path(cmd, env);
+	execve(comd[0], comd, envp);	
+}
 
 void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 {
@@ -109,112 +131,42 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	int in_fd;
 	char **comd;
 	t_file *tmp;
-	int i;
+	pid_t pid;
+	int i = 0;
+	int size;
+	int d;
+	int j = -1;
+	
+	size = ft_lstsizeee(cmd);
+	printf("size %d\n", size);
 	t_cmd *tmp1;
 
 	tmp1 = cmd;
-	
-	// while (tmp1->next != NULL)
-	// {
-	// 	if (pipe(fd) == -1)
-	// 	{
-	// 		printf("-- {%s} -- \n", tmp1->cmd[0]);
-	// 		perror("pipe error");
-	// 		return ;
-	// 	}
-	// 	tmp1 = tmp1->next;
-	// }
-	//comd = get_the_path(cmd, env);
 	in_fd = -1;
-	// pipe (fd);
 	while(cmd != NULL)
 	{
-		if (cmd->next != NULL)
+		pipe (fd);
+		pid = fork();
+		if (pid == 0)
 		{
-			//printf("=======> {1}\n ");
-			pipe (fd);
+			run_exection(cmd, fd, in_fd, i, size, env, envp);
 		}
-		i = fork();
-		if (i == 0)
+	 	else 
 		{
-			// dup2(in_fd, 0);
-			// //dup2(fd[1], 1);
-			// //close (in_fd);
-			// close(fd[0]);
-			if (in_fd == -1)
-			{
-				printf("hola\n");
-				close(fd[0]);
-				dup2(fd[1], 1);
-				close(fd[1]);
-			}
-			else if (cmd->next == NULL)
-			{
-				//printf(" ===> hola  {%s}\n", cmd->cmd[0]);
-				close(fd[1]);
-				dup2(fd[0], 0);
-				dup2(1, 1);
-				close(fd[0]);
-			}
-			else
-			{
-				//printf("hola 2\n");
-				dup2(fd[0], 0);
-				dup2(fd[1], 1);
-				close(fd[0]);
-				close(fd[1]);
-			}
-			  
-			// if (redi_heredoc(cmd) == 0)
-			// 	return ;
-			comd = get_the_path(cmd, env);
-			if (!comd)
-			{
-				//printf("{%s}\n", comd[0]);
-				printf("hooooopla \n");
-				return ;
-			}
-			// if (cmd->next == NULL)
-			// 	dup2(1, 1);
-			//printf ("{%s}\n", cmd->cmd[0]);
-			// close(fd[0]);
-			// close(fd[1]);
-			execve(comd[0], comd, envp);
+			close(fd[1]);
+			if (in_fd != -1)
+				close(in_fd);
+			in_fd = fd[0];
+			cmd = cmd->next;
+			i++;
 		}
-		// else 
-		// {
-	 	in_fd = 0;
-			// close(fd[0]);
-			// close(fd[1]);
-		// }
-		
-		cmd = cmd->next;
 		
 		//free(comd);
 	}
-	close(fd[0]);
 	close(fd[1]);
+	close(fd[0]);
+	// while (waitpid(i, &d, 0) != -1)
+	// 	;
 	while(wait(NULL) != -1)
 		;
-	// i = fork();
-	// if (i == 0)
-	// {
-	// 	dup2(in_fd, 0);
-	// 	close(in_fd);
-	// 	// dup2(1, 1);
-	// 	// close(1);
-	// 	comd = get_the_path(cmd, env);
-	// 	if (!comd)
-	// 	{
-	// 			//printf("{%s}\n", comd[0])
-	// 		printf("hooooopla \n");
-	// 		return ;
-	// 	}
-	// 	// close(in_fd);
-	// 	// close(fd[1]);
-	// 	printf("hoplaaa  =%d=    {%s}\n", in_fd, cmd->cmd[0]);
-	// 	execve(comd[0], comd, envp);
-	// }
-	// wait(NULL);
-	//close(in_fd);
 } 

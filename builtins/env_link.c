@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/21 18:25:08 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/02 21:25:29 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,19 @@ void	ft_list_addback(t_env **lst, t_env *new)
 		    tmp = tmp->next;
 	    tmp->next = new;
     }
+}
+
+int	ft_lstsizeee(t_cmd *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return (count);
 }
 
 void	*ft_link_env(t_env *envi, char **env)
