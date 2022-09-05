@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/30 22:31:21 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 03:23:27 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ int main(int ac, char **av, char **envp)
     
     while(1)
     {
-        str = readline("minishel>");
+        str = readline("minishel> ");
+        if (!str)
+            exit(1);
         if(str[0] && chack_readl(str) == 1)
         {
             add_history(str);
@@ -77,9 +79,11 @@ int main(int ac, char **av, char **envp)
             tmpv = mini->token;
             cmd = fill_cmd(mini->token, cmd);
         }
+        
         if (cmd != NULL)
         {
-            //ft_check_builtins(cmd, eniv);
+           // redi_heredoc(cmd);
+            //if (ft_check_builtins(cmd, eniv) == 0)
             ft_execute(cmd, eniv, mini, envp);
         }
 

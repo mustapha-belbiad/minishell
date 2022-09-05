@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/30 22:51:18 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 02:43:33 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,18 @@ void here_doc(char *file)
 		{
 			rr = ft_split(file, ';');
 			if (ft_strcmp(str, rr[0]) != 0)
+			{
+				printf("%s\n", str);
 				break;
+			}
 		}
 		else if (ft_strcmp(file, str) != 0)
+		{
+			printf("%s\n", str);
 			break;
+		}
 	}
+	printf("houlya \n");
 }
 
 int redi_heredoc(t_cmd *cmd)
@@ -83,6 +90,7 @@ int redi_heredoc(t_cmd *cmd)
 				{
 					output = file_out(tmp->file_name);
 					dup2(output, 1);
+					//close(output);
 				}
 				else if (tmp->e_type == 8)
 				{
@@ -94,9 +102,11 @@ int redi_heredoc(t_cmd *cmd)
 				{
 					here_doc(tmp->file_name);
 					if (cmd->cmd[0] == NULL)
-						return(0);
+						break;
 				}
 				tmp = tmp->next;
             }
+		// if (cmd->cmd[0] == NULL)
+		// 	return (0);
     return (1);
 }

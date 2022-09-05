@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/08/22 21:14:52 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 03:36:30 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,56 @@ int	ft_strrrcmp(const char *s1, const char *s2)
     // }
 }
 
-void pwd_fcnt(char *cmd)
+void pwd_redirect(t_cmd *cmd)
 {
-    free(cmd);
-    cmd = malloc(1024 * sizeof(char *));
-    if (getcwd(cmd, 1024) == NULL)
+    t_file *tmp;
+    int out;
+    
+    tmp = cmd->file;
+    while (tmp)
+    {
+        if(tmp->e_type == 6)
+        {
+            out = open(tmp->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+            cmd->cmd[0] = ft_strjoin(cmd->cmd[0], "\n");
+            ft_putstr_fd(cmd->cmd[0], out);
+        }
+        else if (tmp->e_type == 8)
+	    {
+		    out = open(tmp->file_name, O_CREAT | O_WRONLY | O_APPEND, 0777);
+		    cmd->cmd[0] = ft_strjoin(cmd->cmd[0], "\n");
+	        ft_putstr_fd(cmd->cmd[0], out);
+	    }
+        else if (tmp->e_type == 7) // herdoc
+	    {
+		    here_doc(tmp->file_name);
+            printf("%s \n", cmd->cmd[0]);
+	    }
+        // else 
+            //printf("%s \n", cmd->cmd[0]);
+        tmp = tmp->next;
+    }
+    //printf("%s \n", cmd->cmd[0]);
+}
+
+void pwd_fcnt(t_cmd *cmd)
+{
+    //int out;
+    
+    free(cmd->cmd[0]);
+    cmd->cmd[0] = malloc(1024 * sizeof(char *));
+    // redi_heredoc(cmd);
+    if (getcwd(cmd->cmd[0], 1024) == NULL)
     {
         printf("faild \n");
         return ;
     }
-    printf("%s \n", cmd);
+    if (cmd->file != 0)
+        pwd_redirect(cmd);
+    else
+    {
+        printf("%s \n", cmd->cmd[0]);
+    }
 }
 
 void exit_fcnt(char *cmd)
@@ -354,22 +394,46 @@ void    unset_fcnt(t_cmd *cmd, t_env **env)
     (*env) = head;
 }
 
-void    ft_check_builtins(t_cmd *cmd, t_env *eniv)
-{
-    if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1) /*getcwd*/
-        pwd_fcnt(cmd->cmd[0]);
+int    ft_check_builtins(t_cmd *cmd, t_env *eniv)
+{   
+    //redi_heredoc(cmd);
+    if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1)/*getcwd*/
+    {
+        pwd_fcnt(cmd);
+        return (1);
+    }
     else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
+    {
         cd_fcnt(cmd);
+        return (1);
+    }
     else if (ft_strrrcmp(cmd->cmd[0], "export") == 1)
+    {
        eniv =  export_fcnt(cmd, eniv);
+       return (1); 
+    }
     else if (ft_strrrcmp(cmd->cmd[0], "unset") == 1)
+    {
         unset_fcnt(cmd, &eniv);
+        return (1);
+    }
     else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
+    {
         eniv = env_fcnt(eniv);
+        return (1);
+    }
     else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)
+    {
         exit_fcnt(cmd->cmd[0]);
+        return (1);
+    }
     else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/
+    {
         echo_fcnt(cmd);
+        return (1);
+    }
+    else 
+        return (0);
     //printf("houlyaaa 3333 \n");
     // else
     //     printf("command not found \n");

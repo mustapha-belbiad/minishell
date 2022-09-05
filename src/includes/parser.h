@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 17:24:27 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 21:33:37 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/05 01:43:23 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct cmd
 	t_file		*file;
 	struct cmd	*next;
 }	t_cmd;
+
+struct cmd;
 
 t_parser	*init_parser(char *value, int e_type, int i);
 int			check_err_quote(t_token *token);

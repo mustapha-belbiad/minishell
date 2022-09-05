@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/02 21:29:40 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 02:43:14 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ char	**command_check(char **cmd, char **rest)
 		free(path);
 		i++;
 	}
-	free(cmd);
-	return (0);
+	// free(cmd);
+	return (cmd);
 }
 
 char	**get_the_path(t_cmd *cmd, t_env *env)
@@ -92,11 +92,11 @@ char	**get_the_path(t_cmd *cmd, t_env *env)
 	// printf(" str ;; == {%s} \n", str[0]);
 	Pth = command_check(str, cmd->cmd);
 	//printf("rest ;; --------------------------------- {%s} \n", Pth[0]);
-	if (Pth == NULL )
-	{
-		write (1, "command not found\n", 19);
-		return (Pth);
-	}
+	// if (Pth == NULL )
+	// {
+	// 	write (1, "\n", 19);
+	// 	return (Pth);
+	// }
 	i = -1;
 	// while(Pth[++i])
 	// 	printf(" {%s} \n", Pth[i]);
@@ -119,10 +119,16 @@ void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, c
 		close(in_fd);
 	}
 	//dup2 infils
-	// if (redi_heredoc(cmd) == 0)
-	// 	return ;
+	if (redi_heredoc(cmd) == 0)
+		return ;
 	comd = get_the_path(cmd, env);
-	execve(comd[0], comd, envp);	
+	if (!comd)
+		return ;
+	if (execve(comd[0], comd, envp) < 0)
+	{
+		write (1, "command not found\n", 19);
+		exit(1);
+	}	
 }
 
 void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
@@ -138,7 +144,6 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	int j = -1;
 	
 	size = ft_lstsizeee(cmd);
-	printf("size %d\n", size);
 	t_cmd *tmp1;
 
 	tmp1 = cmd;
@@ -146,19 +151,30 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	while(cmd != NULL)
 	{
 		pipe (fd);
-		pid = fork();
-		if (pid == 0)
+		if (ft_check_builtins(cmd, env) == 1)
 		{
-			run_exection(cmd, fd, in_fd, i, size, env, envp);
-		}
-	 	else 
-		{
-			close(fd[1]);
-			if (in_fd != -1)
-				close(in_fd);
-			in_fd = fd[0];
 			cmd = cmd->next;
 			i++;
+		}
+		else 
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				run_exection(cmd, fd, in_fd, i, size, env, envp);
+				if (!cmd->cmd)
+					break;
+			}
+	 		else 
+			{
+				close(fd[1]);
+				if (in_fd != -1)
+					close(in_fd);
+				in_fd = fd[0];
+				cmd = cmd->next;
+				i++;
+			}
+		
 		}
 		
 		//free(comd);
@@ -169,4 +185,6 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	// 	;
 	while(wait(NULL) != -1)
 		;
+	// if (!cmd->cmd)
+	// 	return ;
 } 
