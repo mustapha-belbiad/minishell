@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/02 21:25:29 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 18:05:36 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_list_addback(t_env **lst, t_env *new)
 int	ft_lstsizeee(t_cmd *lst)
 {
 	int	count;
-
+	
 	count = 0;
 	while (lst)
 	{

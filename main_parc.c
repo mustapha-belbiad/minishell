@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/05 03:23:27 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 18:18:59 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ int main(int ac, char **av, char **envp)
     mini->env = get_env(envp);
 
     eniv = ft_link_env(eniv, mini->env);
+    g_env = ft_link_env(eniv, mini->env);
+    // printf(" ==== > %s\n", eniv->envir);
+    // printf(" ==== > %s\n", g_env->envir);
     
     while(1)
     {
@@ -86,7 +89,7 @@ int main(int ac, char **av, char **envp)
             //if (ft_check_builtins(cmd, eniv) == 0)
             ft_execute(cmd, eniv, mini, envp);
         }
-
+        
 
 
 
@@ -114,8 +117,8 @@ int main(int ac, char **av, char **envp)
         // {
         //     i = 0;
         //     printf("-------------cmd------------/\n");
-        //     // while(cmd->cmd[i])
-        //     //     printf("----");
+        //     while (cmd->cmd[i])
+        //         printf("---- {%s} \n", cmd->cmd[i++]);
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 

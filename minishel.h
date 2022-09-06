@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/05 03:08:23 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/05 18:18:30 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct t_env
 	char *envir;
 	struct t_env *next;
 }	t_env;
+
+t_env	*g_env;
 
 int		lent_d_pointer(char **str);
 char	**get_env(char	**str);
