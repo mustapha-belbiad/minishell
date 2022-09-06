@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/05 02:43:14 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/06 02:30:10 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	int size;
 	int d;
 	int j = -1;
-	
+	if (cmd->cmd[0] == NULL)
+		return ;
 	size = ft_lstsizeee(cmd);
 	t_cmd *tmp1;
 

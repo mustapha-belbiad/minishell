@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/05 18:18:59 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/06 14:47:12 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,21 @@ int main(int ac, char **av, char **envp)
     t_cmd   *tmp1;
     t_token *tmpv;
 
-     t_env   *eniv;
+    t_env   *eniv;
 
     eniv = malloc(sizeof(t_env));
     
+
     files = NULL;
     mini = malloc(sizeof(t_mini));
     mini->env = get_env(envp);
 
-    eniv = ft_link_env(eniv, mini->env);
+     eniv = ft_link_env(eniv, mini->env);
     g_env = ft_link_env(eniv, mini->env);
-    // printf(" ==== > %s\n", eniv->envir);
-    // printf(" ==== > %s\n", g_env->envir);
     
     while(1)
     {
-        str = readline("minishel> ");
-        if (!str)
-            exit(1);
+        str = readline("minishel>");
         if(str[0] && chack_readl(str) == 1)
         {
             add_history(str);
@@ -83,16 +80,18 @@ int main(int ac, char **av, char **envp)
             cmd = fill_cmd(mini->token, cmd);
         }
         
-        if (cmd != NULL)
+        if (cmd->cmd[0] != NULL)
         {
            // redi_heredoc(cmd);
             //if (ft_check_builtins(cmd, eniv) == 0)
+            printf("{%s} \n", cmd->cmd[0]);
+            printf("hola \n");
             ft_execute(cmd, eniv, mini, envp);
         }
+        if (cmd->file != NULL)
+            redi_heredoc(cmd);
+
         
-
-
-
         // t_token *tmp;
         // tmp = mini->token;
         // tmp = tmp->next;
@@ -112,25 +111,22 @@ int main(int ac, char **av, char **envp)
         // }
         // free(str);
         // tmp1 = cmd;
-        // int i;
         // while(tmp1)
         // {
-        //     i = 0;
         //     printf("-------------cmd------------/\n");
-        //     while (cmd->cmd[i])
-        //         printf("---- {%s} \n", cmd->cmd[i++]);
+        //     printf("{%s}\n", tmp1->cmd[0]);
+        //     printf("{%s}\n", tmp1->cmd[1]);
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 
         //     while (tmpf)
         //     {
         //         printf("%s\n", tmpf->file_name);
-        //         printf("%d\n", tmpf->e_type);
         //         tmpf =  tmpf->next;
         //     }
         //     printf("-------------------------/\n");
 
-        //      printf("-------------------------\n");
+        // //     printf("-------------------------");
         //     tmp1 = tmp1->next;
         // }
         mini->token = NULL;

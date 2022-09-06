@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/05 18:18:30 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/06 14:46:40 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 # include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-# include <sys/fcntl.h>
-# include <stddef.h>
 
 typedef struct nav
 {
@@ -48,10 +46,10 @@ typedef struct minishel
 	int			num_pip;
 }	t_mini;
 
-
 typedef struct t_env
 {
 	char *envir;
+	int fd;
 	struct t_env *next;
 }	t_env;
 
@@ -77,5 +75,6 @@ int		redi_heredoc(t_cmd *cmd);
 void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, char **envp);
 int		ft_lstsizeee(t_cmd *lst);
 void	here_doc(char *file);
+
 
 #endif

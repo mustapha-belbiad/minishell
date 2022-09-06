@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/06 02:18:10 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/06 02:26:20 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,7 @@ void    cd_fcnt(t_cmd *cmd)
     t_env *env;
     char *home;
     
-    home = ft_
+    // home = ft_
     str = malloc(sizeof(char *));
     if (cmd->cmd[1] == NULL)
     {

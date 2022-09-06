@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/05 02:43:33 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/06 02:47:14 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,28 @@ void here_doc(char *file)
 {
 	char *str;
 	char **rr;
-	
+
+	//g_env->fd;
 	while (1)
 	{
 		str = readline(">");
 		str = ft_strjoin(str, "\n");
+		//ft_putstr_fd(str, g_env->fd);
 		if (ft_strchr(file, ';') != 0)
 		{
 			rr = ft_split(file, ';');
 			if (ft_strcmp(str, rr[0]) != 0)
 			{
-				printf("%s\n", str);
+				//printf("%s\n", str);
 				break;
 			}
 		}
 		else if (ft_strcmp(file, str) != 0)
 		{
-			printf("%s\n", str);
+			printf(" == >hani kharj \n");
 			break;
 		}
 	}
-	printf("houlya \n");
 }
 
 int redi_heredoc(t_cmd *cmd)
@@ -100,9 +101,12 @@ int redi_heredoc(t_cmd *cmd)
 				}
 				else if (tmp->e_type == 7) // herdoc
 				{
+	
 					here_doc(tmp->file_name);
 					if (cmd->cmd[0] == NULL)
 						break;
+					// else
+					// 	dup2(g_env->fd, 0);
 				}
 				tmp = tmp->next;
             }

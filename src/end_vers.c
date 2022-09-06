@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   end_vers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/29 22:53:59 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/08/21 23:23:58 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,25 @@ t_file	*check_if(t_file *file, char *file_name, int e_type)
 char	**return_cmd(char *str)
 {
 	char	**spl;
-	// int i = 0;
+	int		i;
 
-	spl = ft_split(str, ' ');	
-	// while(spl[i])
-	// 	printf("-- {%s} --\n", spl[i++]);
-	// printf("-- {%s} --\n", spl[1]);
-	// printf("-- {%s} --\n", spl[2]);
+	i = 0;
+	if (!str)
+		return (NULL);
+	spl = malloc(sizeof(char *) * 3);
+	while (str[i] != ' ' && str[i])
+		i++;
+	i++;
+	spl[0] = ft_substr(str, 0, i - 1);
+	if (i == ft_strlen(str))
+	{
+		spl[1] = 0;
+	}
+	else
+	{
+		spl[1] = ft_substr(str, i, ft_strlen(str));
+		spl[2] = NULL;
+	}
 	return (spl);
 }
 
