@@ -25,7 +25,7 @@ all : $(NAME)
 
 $(NAME): $(SRC)
 	make -C ./libft
-	$(CC) $(FLA) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a -g  -fsanitize=address 
+	$(CC) $(FLA) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a
 
 clean : 
 	rm -f $(NAME)

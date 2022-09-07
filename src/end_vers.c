@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 23:23:58 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:51:30 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ char	**return_cmd(char *str)
 {
 	char	**spl;
 	int		i;
+	char	**cmd;
+	char	**tmp;
+	int		j;
 
 	i = 0;
 	if (!str)
@@ -52,7 +55,19 @@ char	**return_cmd(char *str)
 		spl[1] = ft_substr(str, i, ft_strlen(str));
 		spl[2] = NULL;
 	}
-	return (spl);
+	cmd = malloc(sizeof(char *) * ft_count_words(str, ' ') + 1);
+	cmd[0] = spl[0];
+	tmp = ft_split(spl[1], ' ');
+	i = 1;
+	j = 0;
+	while(tmp[j])
+	{
+		cmd[i] = tmp[j];
+		j++;
+		i++;
+	}
+	cmd[i] = 0;
+	return (cmd);
 }
 
 char	**pick_double(t_token *tmp)

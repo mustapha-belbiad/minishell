@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:41:21 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 04:35:28 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:24:57 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,5 @@ char	*expand(t_lexer *lexer, char **env);
 void	pick_bitwen_sq(t_lexer *lexer, t_token *token, char **env);
 void	pick_bitwen_dq(t_lexer *lexer, t_token *token, char **env);
 char	*expand2(t_lexer *lexer, char **env);
+char	**check_cmd(char *str);
 #endif

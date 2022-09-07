@@ -1,0 +1,10 @@
+Makefile
+builtins
+execute
+l
+libft
+main_parc.c
+minishel
+minishel.dSYM
+minishel.h
+src

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/06 14:47:12 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/07 23:16:38 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,12 @@ int main(int ac, char **av, char **envp)
 
     eniv = malloc(sizeof(t_env));
     
-
     files = NULL;
     mini = malloc(sizeof(t_mini));
     mini->env = get_env(envp);
 
-     eniv = ft_link_env(eniv, mini->env);
+    eniv = ft_link_env(eniv, mini->env);
     g_env = ft_link_env(eniv, mini->env);
-    
     while(1)
     {
         str = readline("minishel>");
@@ -79,18 +77,17 @@ int main(int ac, char **av, char **envp)
             tmpv = mini->token;
             cmd = fill_cmd(mini->token, cmd);
         }
-        
-        if (cmd->cmd[0] != NULL)
+
+        if (cmd->cmd[0][0] != '\0')
         {
            // redi_heredoc(cmd);
             //if (ft_check_builtins(cmd, eniv) == 0)
-            printf("{%s} \n", cmd->cmd[0]);
-            printf("hola \n");
             ft_execute(cmd, eniv, mini, envp);
         }
-        if (cmd->file != NULL)
+        else if(cmd->file != NULL)
+        {
             redi_heredoc(cmd);
-
+        }
         
         // t_token *tmp;
         // tmp = mini->token;
@@ -114,8 +111,8 @@ int main(int ac, char **av, char **envp)
         // while(tmp1)
         // {
         //     printf("-------------cmd------------/\n");
-        //     printf("{%s}\n", tmp1->cmd[0]);
-        //     printf("{%s}\n", tmp1->cmd[1]);
+        //     for(int i = 0; tmp1->cmd[i] ; i++)
+        //         printf("{%s}\n", tmp1->cmd[i]);
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 

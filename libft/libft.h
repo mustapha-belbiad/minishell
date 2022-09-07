@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:25:02 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/07/01 22:43:03 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:59:22 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ char    *ft_strcat(char *dest, char *src);
 void    ft_putstr(char *str);
 int     ft_strcmp(char *s1, char *s2);
 int     ft_isalnum2(char c);
+int     ft_count_words(const char *s, char c);
 
 #endif

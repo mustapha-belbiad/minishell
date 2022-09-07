@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/06 14:46:40 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/07 23:15:33 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ typedef struct minishel
 typedef struct t_env
 {
 	char *envir;
-	int fd;
+	char **input;
+	int ret_val;
+	int	fd_hr[2];
 	struct t_env *next;
 }	t_env;
 
@@ -75,6 +77,5 @@ int		redi_heredoc(t_cmd *cmd);
 void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, char **envp);
 int		ft_lstsizeee(t_cmd *lst);
 void	here_doc(char *file);
-
 
 #endif
