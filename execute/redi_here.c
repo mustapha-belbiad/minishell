@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/07 23:31:15 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/09 02:45:15 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ void here_doc(char *file)
 				if (ft_strcmp(str, rr[0]) != 0)
 				{
 				//printf("%s\n", str);
+					free(str);
 					break;
 				}
 			}
 			else if (ft_strcmp(file, str) != 0)
 			{
+				free(str);
 				//printf(" == >hani kharj \n");
 				break;
 			}
@@ -78,6 +80,7 @@ void here_doc(char *file)
 		{
 			str = ft_strjoin(str, "\n");
 			ft_putstr_fd(str, g_env->fd_hr[1]);
+			free(str);
 		}
 		
 		//ft_putstr_fd("\n", g_env->fd_hr[1]);
@@ -94,7 +97,7 @@ int redi_heredoc(t_cmd *cmd)
     tmp = cmd->file;
 			while (tmp)
 			{
-				if (tmp->e_type == 5)
+				if (tmp->e_type == 5 && cmd->cmd[0][0] != '\0')
 				{
 					input = check_file(tmp->file_name);
 					if (input == -1)
@@ -104,13 +107,13 @@ int redi_heredoc(t_cmd *cmd)
 					}
 					dup2(input, 0);
 				}
-				else if (tmp->e_type == 6)
+				else if (tmp->e_type == 6 && cmd->cmd[0][0] != '\0')
 				{
 					output = file_out(tmp->file_name);
 					dup2(output, 1);
 					//close(output);
 				}
-				else if (tmp->e_type == 8)
+				else if (tmp->e_type == 8 && cmd->cmd[0][0] != '\0')
 				{
 					output = append_mode(tmp->file_name);
 					dup2(output, 1);

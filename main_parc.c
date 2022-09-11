@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/07 23:16:38 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/11 00:25:41 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ void    change_value(t_token *token)
         tmp = tmp->next;
     }
 }
-
+void hola(int num)
+{
+    write(1, "holaooaa\n", 11);
+    exit(0);
+}
 int main(int ac, char **av, char **envp)
 {
     t_mini  *mini;
@@ -72,13 +76,16 @@ int main(int ac, char **av, char **envp)
         if(str[0] && chack_readl(str) == 1)
         {
             add_history(str);
+            
             mini->lexer = init_lexer(str);
             mini->token = pick_tokens(mini->lexer, envp);
             tmpv = mini->token;
             cmd = fill_cmd(mini->token, cmd);
         }
-
-        if (cmd->cmd[0][0] != '\0')
+        //signal(SIGINT, hola);
+       //printf("{%s}\n", cmd->cmd[0]);
+        
+        if (cmd->cmd[0] != NULL)
         {
            // redi_heredoc(cmd);
             //if (ft_check_builtins(cmd, eniv) == 0)
@@ -88,7 +95,7 @@ int main(int ac, char **av, char **envp)
         {
             redi_heredoc(cmd);
         }
-        
+        // //signal(SIGQUIT, hola);
         // t_token *tmp;
         // tmp = mini->token;
         // tmp = tmp->next;
@@ -111,8 +118,12 @@ int main(int ac, char **av, char **envp)
         // while(tmp1)
         // {
         //     printf("-------------cmd------------/\n");
-        //     for(int i = 0; tmp1->cmd[i] ; i++)
-        //         printf("{%s}\n", tmp1->cmd[i]);
+        //     // if (cmd->cmd[0][0] != '\0')
+        //     // {
+        //     //     for(int i = 0; tmp1->cmd[i] ; i++)
+        //     //         printf("{%s}\n", tmp1->cmd[i]);
+        //     // }
+            
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 

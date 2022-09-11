@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/07 23:09:47 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/11 04:43:57 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, c
 	comd = get_the_path(cmd, env);
 	if (!comd)
 		return ;
+	//printf("%s \n", comd[0]);
 	if (execve(comd[0], comd, envp) < 0)
 	{
 		write (1, "command not found\n", 19);
@@ -142,7 +143,7 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	int size;
 	int j = -1;
 	
-	if (cmd->cmd[0][0] == '\0')
+	if (cmd->cmd == NULL)
 		return ;
 	size = ft_lstsizeee(cmd);
 	t_cmd *tmp1;
@@ -152,7 +153,7 @@ void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	while(cmd != NULL)
 	{
 		pipe (fd);
-		if (ft_check_builtins(cmd, env) == 1)
+		if (ft_check_builtins(cmd) == 1)
 		{
 			cmd = cmd->next;
 			i++;

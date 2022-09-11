@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   end_vers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/07 10:51:30 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/09 23:36:40 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,20 @@ char	**return_cmd(char *str)
 	int		j;
 
 	i = 0;
-	if (!str)
-		return (NULL);
+	if (str == NULL)
+		return (0);
 	spl = malloc(sizeof(char *) * 3);
 	while (str[i] != ' ' && str[i])
 		i++;
 	i++;
 	spl[0] = ft_substr(str, 0, i - 1);
+	// printf("======={%s}\n",spl[0]);
+	// if(spl[0][0] == '\0')
+	// {
+	// 	spl[0] = 0;
+	// 	return(spl);
+	// }
+		
 	if (i == ft_strlen(str))
 	{
 		spl[1] = 0;
@@ -192,11 +199,14 @@ t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
 		{
 			cmd_add_back(&cmd, return_cmd(str), file);
 			file = NULL;
-			str = ft_strdup("\0");
+			free(str);
 		}
 		tmp = tmp->next;
 	}
 	if (file || str)
+	{
 		cmd_add_back(&cmd, return_cmd(str), file);
+		free(str);
+	}	
 	return (cmd);
 }

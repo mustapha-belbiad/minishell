@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/07 23:15:33 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/11 04:44:22 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**get_env(char	**str);
 t_nav	*init_nav(t_nav *nav);
 
 //----------- builtins ------------------------------
-int		ft_check_builtins(t_cmd *cmd, t_env *mini);
+int		ft_check_builtins(t_cmd *cmd);
 int		ft_envp(char **envp);
 void	*ft_link_env(t_env *envi, char **env);
 void	ft_list_addback(t_env **lst, t_env *new);
