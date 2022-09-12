@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/12 23:36:53 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 23:50:23 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,70 +136,7 @@ int    ft_check_echo(char *cmd)
 			return(1);
 	}
 	return(0);
-	
-	// char **check;
-	// int i;
-	// int j;
-	// int index;
-	
-	// index = 0;
-	// j = 0;
-	// i = 0;
-	// while (cmd->cmd[++j])
-	// {
-	// 	i = 0;
-	// 	if (cmd->cmd[j][i] == '-' && cmd->cmd[j][i + 1] == 'n')
-	// 	{
-	// 		while(cmd->cmd[j][++i] == 'n')
-	// 			;
-	// 		if (cmd->cmd[j][i] != '\0')
-	// 		{
-	// 			printf("gkfdhgfd \n");
-	// 			return (j);
-	// 		}
-	// 		if (cmd->cmd[j + 1][0] != '-')
-	// 		{
-	// 			printf(" 1 :{%s}\n", cmd->cmd[j]);
-	// 			return(j);
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		printf("2 : {%s}\n", cmd->cmd[j]);
-	// 		return(0);
-
-	// 	}
-	// }
-	//return(0);
-}
-	//     if(cmd->cmd[1][i] == '-' && cmd->cmd[1][i + 1] == 'n')
-	//     {
-	//         // if (cmd->cmd[1][i + 1] != 'n' && cmd->cmd[i + 2] != ' ')
-	//         //     return (0);
-	//         j = i + 1;
-	//         while(cmd->cmd[1][j] == 'n')
-	//             j++;
-	//         i = j;
-	//         if (cmd->cmd[1][i] == '\0')
-	//         {
-	//              printf("==> 1 :%c\n", cmd->cmd[1][i]);
-	//             return (0);
-	//         }
-	//         if (cmd->cmd[1][i] != '\0')
-	//         {
-	//             printf("==> 1: %c\n", cmd->cmd[1][i]);
-	//             return (i);
-	//         }
-	//         // if (cmd->cmd[1][i] == '-' ||)
-	//         //     return(0);
-	//     }
-	//    // i = j;
-	//     if (cmd->cmd[1][i] != ' ' || cmd->cmd[1][i] != '\0')
-	//         break;
-	//     else
-	//         i++; 
-	//}
-	//return (0);    
+}  
 
 int echo_redirect(t_cmd *cmd)
 {
@@ -243,27 +180,12 @@ void echo_fcnt(t_cmd *cmd)
 		ft_putstr_fd("\n", fd);
 		return ;
 	}
-	//i = ft_check_echo(cmd);
-	// if (cmd->file != 0)
-	//     echo_redirect(cmd, i);
-	// else 
-	// {}
-	//printf("hopla");
 	i = 1;
 	while (cmd->cmd[i])
 	{
 		printf("i => 1: %d \n", i);
 		if (ft_check_echo(cmd->cmd[i]) == 1)
-		{
 			i++;
-			// while (cmd->cmd[i])
-			// {
-			// 	ft_putstr_fd(cmd->cmd[i], fd);
-			// 	ft_putstr_fd(" ", fd);
-			// 	i++;
-			// }
-			// ft_putstr_fd("\n", fd);
-		}
 		else 
 			break;
 	}
@@ -290,48 +212,8 @@ void echo_fcnt(t_cmd *cmd)
 				i++;
 			}
 			return ;
-		//}
-		// else
-		// {
-			
-		// }
-		// printf(" 1 : {%d}\n", i);
-		// if (i == 0 && cmd->cmd[1] != NULL)
-		// {
-		// 	i = 0;
-		// 	while (cmd->cmd[++i])
-		// 	{
-		// 		ft_putstr_fd(cmd->cmd[i], fd);
-		// 		ft_putstr_fd(" ", fd);
-		// 	}
-		// 		ft_putstr_fd("\n", fd);
-		// 		//printf("\n");
-		// }
-		// else 
-		// {
-		// 	//i = 1;
-		// 	// printf("2 : {%d}\n", i);
-		// 	while(cmd->cmd[i])
-		// 	{
-		// 		ft_putstr_fd(cmd->cmd[i], fd);
-		// 		if (cmd->cmd[i + 1] != '\0')
-		// 			ft_putstr_fd(" ", fd);
-		// 	}
-		// }
 	}
 }
-	
-   // printf("====== > {%s} \n", cmd->cmd[1]); //&& (cmd->cmd[1][2] == ' ' || cmd->cmd[1][2] == '\0'))
-	// if((cmd->cmd[1][0] == '-' && cmd->cmd[1][1] == 'n')
-	//     && (cmd->cmd[1][2] == ' ' || cmd->cmd[1][2] == '\0'))
-	// {
-	//     int i = 1;
-	//     while(cmd->cmd[1][++i])
-	//         printf("%c", cmd->cmd[1][i]);
-	// }
-	// else 
-	//     printf("%s\n", cmd->cmd[1]);
- //}
 
 int ft_check_env(char *env)
 {
@@ -446,15 +328,15 @@ void    cd_fcnt(t_cmd *cmd)
 	char *str;
 	t_env *env;
 	char *home;
-	
-	// home = ft_
+
+	env = g_env;
 	str = malloc(sizeof(char *));
 	if (cmd->cmd[1] == NULL)
 	{
-		// env->envir = ft_strdup("hola\n");
-		// printf("%s\n", env->envir);
-		str = ft_strdup("/Users/mbelbiad"); //path of HOME;
-		//printf("%s\n", str);
+		
+		home = strrr(env, "HOME=");
+		str = ft_substr(home, 6, ft_strlen(home));
+		str = ft_strjoin("/", str);
 	}
 	else
 		str = ft_strdup(cmd->cmd[1]);

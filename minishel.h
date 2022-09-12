@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/12 05:25:13 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 23:43:55 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int		redi_heredoc(t_cmd *cmd);
 void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, char **envp);
 int		ft_lstsizeee(t_cmd *lst);
 void	here_doc(char *file);
+char	*strrr(t_env *env, char *pth);
 
 #endif

@@ -6,20 +6,20 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/11 04:43:57 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 23:44:49 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
 
-char	*strrr(t_env *env)
+char	*strrr(t_env *env, char *pth)
 {
-	char	*pth;
+	//char	*pth;
 	char	*re;
 	int		i;
 
 	i = 0;	
-	pth = "PATH=";
+	//pth = "PATH=";
 	while (env != NULL)
 	{
 		if (ft_strnstr(env->envir, pth, 5) != NULL)
@@ -78,7 +78,7 @@ char	**get_the_path(t_cmd *cmd, t_env *env)
 	// {
 	// 	printf ("cmd is : %s\n", cmd->cmd[i++]);
 	// }
-	Path = strrr(env);
+	Path = strrr(env, "PATH=");
 	Path = ft_substr(Path, 6, ft_strlen(Path));
 	str= ft_split(Path, ':');
 	//printf("--- {%s} --- \n", str[0]);
