@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 17:24:27 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 21:33:37 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/11 22:03:32 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,9 @@ char		**pick_double(t_token *tmp);
 int			ft_strncmpp(char *str, char c);
 int			test_cmp(char *str, char *str1);
 int			red_flag(t_token *token);
+void		check_check(t_token *t, t_cmd *cmd);
+void		get_null(t_token *token, t_cmd *cmd);
+char		*change_value_cmd(char *str);
+char		**change_value2(char **str);
 
 #endif

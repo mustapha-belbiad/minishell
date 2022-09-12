@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/11 00:25:41 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:19:14 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ int chack_readl(char *str)
     }
     return(0);
 }
+
 void    change_value(t_token *token)
 {
     t_token *tmp;
     int     i;
     
     tmp = token;
-    i = 0;
     while(tmp)
     {
         if(tmp->e_type == REDIRECT_IN || tmp->e_type == REDIRECT_OT
@@ -38,19 +38,22 @@ void    change_value(t_token *token)
         {
             if(tmp->next)
             {
-                i = tmp->e_type;
-                tmp->next->e_type = i;
+                tmp->next->e_type = tmp->e_type;
                 tmp = tmp->next;
+            }
+            if(tmp->e_type == S_Q || tmp->e_type == D_Q || tmp->e_type == CMD_WORD)
+            {
+                while(tmp->e_type == S_Q || tmp->e_type == D_Q || tmp->e_type == CMD_WORD)
+                {
+                    tmp->e_type = J;
+                    tmp = tmp->next;
+                }
             }
         }
         tmp = tmp->next;
     }
 }
-void hola(int num)
-{
-    write(1, "holaooaa\n", 11);
-    exit(0);
-}
+
 int main(int ac, char **av, char **envp)
 {
     t_mini  *mini;
@@ -76,26 +79,27 @@ int main(int ac, char **av, char **envp)
         if(str[0] && chack_readl(str) == 1)
         {
             add_history(str);
-            
             mini->lexer = init_lexer(str);
             mini->token = pick_tokens(mini->lexer, envp);
             tmpv = mini->token;
             cmd = fill_cmd(mini->token, cmd);
-        }
-        //signal(SIGINT, hola);
-       //printf("{%s}\n", cmd->cmd[0]);
+
+            
+            if (cmd->cmd[0] != NULL)
+            {
+            // redi_heredoc(cmd);
+                //if (ft_check_builtins(cmd, eniv) == 0)
+                ft_execute(cmd, eniv, mini, envp);
+            }
+            else if(cmd->file != NULL)
+            {
+                redi_heredoc(cmd);
+            }
         
-        if (cmd->cmd[0] != NULL)
-        {
-           // redi_heredoc(cmd);
-            //if (ft_check_builtins(cmd, eniv) == 0)
-            ft_execute(cmd, eniv, mini, envp);
         }
-        else if(cmd->file != NULL)
-        {
-            redi_heredoc(cmd);
-        }
-        // //signal(SIGQUIT, hola);
+        
+        
+           
         // t_token *tmp;
         // tmp = mini->token;
         // tmp = tmp->next;
@@ -115,15 +119,13 @@ int main(int ac, char **av, char **envp)
         // }
         // free(str);
         // tmp1 = cmd;
+        // int i = 0;
         // while(tmp1)
         // {
+        //     i = 0;
         //     printf("-------------cmd------------/\n");
-        //     // if (cmd->cmd[0][0] != '\0')
-        //     // {
-        //     //     for(int i = 0; tmp1->cmd[i] ; i++)
-        //     //         printf("{%s}\n", tmp1->cmd[i]);
-        //     // }
-            
+        //     while(tmp1->cmd[i])
+        //         printf("{%s}\n", tmp1->cmd[i++]);    
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 

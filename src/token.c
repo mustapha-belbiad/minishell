@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:51:20 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 21:22:53 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:58:46 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ void	token_add_back(t_token **token, char *value, int e_type)
 	t_token *last;
 	t_token *tmp;
 	
-
+	if(!*token)
+	{
+		*token = init_token(value, e_type);
+		return ;
+	}
 	last = init_token(value, e_type); 
 	tmp = (*token);
 	while(tmp->next)

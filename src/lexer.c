@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:50:32 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 21:22:58 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/11 01:09:46 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	lexer_advance_with(t_lexer *lexer, t_token *token, char *value,
 t_token	*pick_tokens(t_lexer *lexer, char **env)
 {
 	t_token *token;
-	token = init_token("S", START);
+	token = init_token("START", START);
 	while(lexer->i < ft_strlen(lexer->src) && lexer->c != '\0')
 	{
 		lexer_skip_space(lexer);
@@ -112,5 +112,6 @@ t_token	*pick_tokens(t_lexer *lexer, char **env)
 		if(lexer->c == '"')
 			pick_bitwen_dq(lexer, token, env);
 	}
+	// ft_list_remove_if(&token);
 	return(token);
 }

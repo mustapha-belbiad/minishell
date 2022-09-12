@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:41:21 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/07 10:24:57 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:09:55 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ typedef struct lexer
 	char	*src;
 	int		i;
 }	t_lexer;
+
+
+typedef struct endtoken
+{
+	char	*str;
+	int		i;
+	struct endtoken	*next;
+}	t_endt;
 
 t_lexer	*init_lexer(char *src);
 void	lexer_advance(t_lexer *lexer);
@@ -40,5 +48,7 @@ char	*expand(t_lexer *lexer, char **env);
 void	pick_bitwen_sq(t_lexer *lexer, t_token *token, char **env);
 void	pick_bitwen_dq(t_lexer *lexer, t_token *token, char **env);
 char	*expand2(t_lexer *lexer, char **env);
-char	**check_cmd(char *str);
+char	*get_name_of_file(t_token *tmp);
+char	*get_v(t_token *tmp);
+t_token	*change_t_token(t_token *tmp);
 #endif

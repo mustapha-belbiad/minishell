@@ -13,6 +13,7 @@ SRC = main_parc.c \
 	./src/lexer_dollar.c \
 	./src/end_vers_outils.c \
 	./src/end_vers.c \
+	./src/get_list_of_cmd.c \
 	./builtins/ft_check_cmd.c \
 	./builtins/env_link.c \
 	./execute/ft_execute.c \
@@ -23,9 +24,11 @@ ARG = -o
 
 all : $(NAME)
 
+# -g3  -fsanitize=address 
+
 $(NAME): $(SRC)
 	make -C ./libft
-	$(CC) $(FLA) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a
+	$(CC) $(FLA) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a -g3  -fsanitize=address 
 
 clean : 
 	rm -f $(NAME)

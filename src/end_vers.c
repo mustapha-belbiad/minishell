@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   end_vers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/09 23:36:40 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 02:29:54 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,74 +34,27 @@ char	**return_cmd(char *str)
 {
 	char	**spl;
 	int		i;
-	char	**cmd;
-	char	**tmp;
 	int		j;
 
 	i = 0;
-	if (str == NULL)
-		return (0);
-	spl = malloc(sizeof(char *) * 3);
-	while (str[i] != ' ' && str[i])
-		i++;
-	i++;
-	spl[0] = ft_substr(str, 0, i - 1);
-	// printf("======={%s}\n",spl[0]);
-	// if(spl[0][0] == '\0')
-	// {
-	// 	spl[0] = 0;
-	// 	return(spl);
-	// }
-		
-	if (i == ft_strlen(str))
+	if (!str)
+		return (NULL);
+	str = change_value_cmd(str);
+	spl = ft_split(str, ' ');
+	spl = change_value2(spl);
+	while(spl[i])
 	{
-		spl[1] = 0;
-	}
-	else
-	{
-		spl[1] = ft_substr(str, i, ft_strlen(str));
-		spl[2] = NULL;
-	}
-	cmd = malloc(sizeof(char *) * ft_count_words(str, ' ') + 1);
-	cmd[0] = spl[0];
-	tmp = ft_split(spl[1], ' ');
-	i = 1;
-	j = 0;
-	while(tmp[j])
-	{
-		cmd[i] = tmp[j];
-		j++;
-		i++;
-	}
-	cmd[i] = 0;
-	return (cmd);
-}
-
-char	**pick_double(t_token *tmp)
-{
-	t_token	*pickd;
-	char	*str;
-	char	*tmp1;
-	char	**cmd;
-
-	pickd = tmp;
-	str = ft_strdup("\0");
-	while (pickd)
-	{
-		if (tmp->e_type == PIP)
-			break ;
-		if (pickd->e_type == D_Q || pickd->e_type == S_Q
-			|| pickd->e_type == CMD_WORD || pickd->e_type == SPACE)
+		j = 0;
+		while(spl[i][j])
 		{
-			tmp1 = str;
-			str = ft_strjoin(str, pickd->value);
-			free(tmp1);
+			if(spl[i][j] == 127)
+				spl[i][j] = ' ';
+			j++;
 		}
-		pickd = pickd->next;
+		i++;
 	}
-	cmd = return_cmd(str);
 	free(str);
-	return (cmd);
+	return (spl);
 }
 
 // t_file	*pick_files(t_token *tmp, t_file *file)
@@ -164,6 +117,39 @@ int	red_flag(t_token *token)
 		return(0);
 }
 
+char	*get_name_of_file(t_token *tmp)
+{
+	char	*str;
+	char	*temp;
+
+	tmp = tmp->next;
+	str = tmp->value;
+	while(tmp->next->e_type == S_Q || tmp->next->e_type == D_Q)
+	{
+		tmp = tmp->next;
+		temp = str;
+		str = ft_strjoin(str, tmp->value);
+		free(temp);
+	}
+	return(str);
+}
+
+char	*ft_change(t_token *tmp)
+{
+	char	*c;
+	char	*str;
+	char	*tmp2;
+	
+	c = ft_strdup("~");
+	str = ft_strjoin(c, tmp->value);
+	tmp2 = str;
+	str = ft_strjoin(str, c);
+	free(tmp2);
+	free(c);
+	free(tmp->value);
+	return(str);
+}
+
 t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
 {
 	t_token	*tmp;
@@ -177,6 +163,7 @@ t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
 		return(NULL);
 	}	
 	tmp = token;
+	// tmp = tmp->next;
 	file = NULL;
 	str = ft_strdup("\0");
 	change_value(token);
@@ -191,22 +178,22 @@ t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
 		else if (tmp->e_type == D_Q || tmp->e_type == S_Q
 			|| tmp->e_type == CMD_WORD || tmp->e_type == SPACE)
 		{
+			if(tmp->e_type == D_Q || tmp->e_type == S_Q)
+				tmp->value = ft_change(tmp);
 			tmp1 = str;
 			str = ft_strjoin(str, tmp->value);
 			free(tmp1);
 		}
-		if (tmp->e_type == PIP)
+		else if (tmp->e_type == PIP)
 		{
 			cmd_add_back(&cmd, return_cmd(str), file);
 			file = NULL;
-			free(str);
+			str = ft_strdup("");
 		}
 		tmp = tmp->next;
 	}
 	if (file || str)
-	{
 		cmd_add_back(&cmd, return_cmd(str), file);
-		free(str);
-	}	
+	get_null(token, cmd);
 	return (cmd);
 }

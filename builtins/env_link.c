@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/05 18:05:36 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:41:13 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int ft_strcmp2(char *s1, char *s2)
 
 	i = 0;
 	char **cmd = ft_split(s2, '=');
+	if (cmd == NULL)
+		return (0);
 	while(s1[i] && cmd[0][i])
 	{
 		if(s1[i] != cmd[0][i])

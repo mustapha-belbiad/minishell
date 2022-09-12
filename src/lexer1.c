@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 23:44:33 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/22 05:30:39 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:51:45 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void    pick_bitwen_sq(t_lexer *lexer, t_token *token, char **env)
 {
     char    *value;
     char    *c;
+    char    *tmp;
 
     if (no_second_quote(lexer, '\'') == 1)
 	{
@@ -60,21 +61,19 @@ void    pick_bitwen_sq(t_lexer *lexer, t_token *token, char **env)
         lexer_advance(lexer);
 		return ;
 	}
-    value = malloc(sizeof(char));
-	value[0] = '\0';
+    value = ft_strdup("");
     lexer_advance(lexer);
     while(lexer->c != '\'')
     {
         
         c = get_c_as_str(lexer->c);
-		value = ft_realloc(value, (ft_strlen(value) + 1));
-		value = ft_strcat(value, c);
+		tmp = value;
+        value = ft_strjoin(value, c);
 		lexer_advance(lexer);
     }
     lexer_advance(lexer);
     token_add_back(&token, value, S_Q);
     check_after_space(lexer, token);
-    free(value);
 }
 
 void    pick_bitwen_dq(t_lexer *lexer, t_token *token, char **env)

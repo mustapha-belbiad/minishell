@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/09 02:45:15 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/12 05:35:36 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int redi_heredoc(t_cmd *cmd)
     tmp = cmd->file;
 			while (tmp)
 			{
-				if (tmp->e_type == 5 && cmd->cmd[0][0] != '\0')
+				if (tmp->e_type == 5)
 				{
 					input = check_file(tmp->file_name);
 					if (input == -1)
@@ -105,26 +105,31 @@ int redi_heredoc(t_cmd *cmd)
 						perror ("open");
 						return(0);
 					}
+					if (cmd->cmd[0] == NULL)
+						break;
 					dup2(input, 0);
 				}
-				else if (tmp->e_type == 6 && cmd->cmd[0][0] != '\0')
+				else if (tmp->e_type == 6)
 				{
 					output = file_out(tmp->file_name);
+					if (cmd->cmd[0] == NULL)
+						break;
 					dup2(output, 1);
 					//close(output);
 				}
-				else if (tmp->e_type == 8 && cmd->cmd[0][0] != '\0')
+				else if (tmp->e_type == 8)
 				{
 					output = append_mode(tmp->file_name);
+					if (cmd->cmd[0] == NULL)
+						break;
 					dup2(output, 1);
-					printf("out put file is : %s \n", cmd->file->file_name); 
 				}
 				else if (tmp->e_type == 7) // herdoc
 				{
 	
 					here_doc(tmp->file_name);
 					
-					if (cmd->cmd[0][0] == '\0')
+					if (cmd->cmd[0] == NULL)
 						break;
 					else 
 					{
