@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/17 02:12:34 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:31:12 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int main(int ac, char **av, char **envp)
 
     eniv = ft_link_env(eniv, mini->env);
     g_env = ft_link_env(eniv, mini->env);
+    g_env->ret_val = 0;
     while(1)
     {
         str = readline("minishel>");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:50:32 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/11 01:09:46 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:32:08 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ char	*take_id(t_lexer *lexer, t_token *token, char **env)
 	
 	if(lexer->src_size == 1)
 		return(get_c_as_str(lexer->c));
+	if(lexer->src[lexer->i + 1] == '?')
+	{
+		lexer_advance(lexer);
+		// lexer_advance(lexer);
+		return(ft_itoa(g_env->ret_val));
+	}
 	value = malloc(sizeof(char));
 	value[0] = '\0';
 	while(!(check_special_c(lexer->c) == 0) && lexer->c != '\0')

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/17 01:45:58 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:18:46 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, c
 	{
 		write (1, "command not found\n", 19);
 		g_env->ret_val = 1;
-		//printf("{%d}\n", g_env->ret_val);
+		printf("--> {%d}\n", g_env->ret_val);
 		exit(g_env->ret_val);
 	}	
 }
@@ -189,6 +189,7 @@ void     ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	close(fd[0]);
 	while (waitpid(pid, &g_env->ret_val, 0) != -1)
 		;
+	printf("==== {%d} ====\n", g_env->ret_val);
 	// while(wait(NULL) != -1)
 	// 	;
 	// if (!cmd->cmd)

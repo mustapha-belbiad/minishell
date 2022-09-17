@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/17 02:11:48 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:22:58 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -590,43 +590,43 @@ int    ft_check_builtins(t_cmd *cmd, int fd[2])
 	if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1)/*getcwd*/
 	{
 		pwd_fcnt(cmd);
-		g_env->ret_val = 1;
+		g_env->ret_val = 0;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
 	{
 		cd_fcnt(cmd);
-		g_env->ret_val = 1;
+		g_env->ret_val = 0;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "export") == 1)
 	{
 	   export_fcnt(cmd);
-	   g_env->ret_val = 1;
+	   g_env->ret_val = 0;
 	   return (1); 
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "unset") == 1)
 	{
 		unset_fcnt(cmd);
-		g_env->ret_val = 1;
+		g_env->ret_val = 0;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
 	{
 		env_fcnt(cmd);
-		g_env->ret_val = 1;
+		g_env->ret_val = 0;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)
 	{
 		exit_fcnt(cmd->cmd[0]);
-		g_env->ret_val = 1;
+		g_env->ret_val = 0;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/
 	{
 		echo_fcnt(cmd);
-		g_env->ret_val = 1;
+		g_env->ret_val = 0;
 		return (1);
 	}
 	else 

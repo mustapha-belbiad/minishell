@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 23:44:33 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/10 15:51:45 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:38:55 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,13 @@ void    pick_bitwen_dq(t_lexer *lexer, t_token *token, char **env)
     lexer_advance(lexer);
     while(lexer->c != '"')
     {
-        if(lexer->c == '$' && ft_isalnum(lexer->src[lexer->i + 1])
+        if(lexer->c == '$' && lexer->src[lexer->i +1 ] == '?')
+        {
+            lexer_advance(lexer);
+            c = ft_itoa(g_env->ret_val);
+        }
+            
+        else if(lexer->c == '$' && ft_isalnum(lexer->src[lexer->i + 1])
             && lexer->src[lexer->i + 1] != '_'
             && lexer->src[lexer->i + 1] != '"')
             c = expand2(lexer, env);
