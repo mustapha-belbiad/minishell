@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/12 23:43:55 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/17 00:13:31 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct t_env
 	char **input;
 	int ret_val;
 	int	fd_hr[2];
+	int fd_exec[2];
 	struct t_env *next;
 }	t_env;
 
@@ -62,7 +63,7 @@ char	**get_env(char	**str);
 t_nav	*init_nav(t_nav *nav);
 
 //----------- builtins ------------------------------
-int		ft_check_builtins(t_cmd *cmd);
+int		ft_check_builtins(t_cmd *cmd, int fd[2]);
 int		ft_envp(char **envp);
 void	*ft_link_env(t_env *envi, char **env);
 void	ft_list_addback(t_env **lst, t_env *new);

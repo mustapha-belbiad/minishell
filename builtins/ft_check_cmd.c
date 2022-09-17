@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/12 23:50:23 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:11:48 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ void pwd_fcnt(t_cmd *cmd)
 	}
 	if (cmd->file != 0)
 		builtins_redirect(cmd);
+	// else if (cmd->next->cmd[0] != NULL)
+	// {
+	// 	dup2(fd[1], 1);
+	// 	close(fd[1]);
+	// }
 	else
 	{
 		printf("%s \n", cmd->cmd[0]);
@@ -119,7 +124,7 @@ void pwd_fcnt(t_cmd *cmd)
 void exit_fcnt(char *cmd)
 {
 	(void)cmd;
-	printf("hooopla\n");
+	printf("exit\n");
 	exit(1);
 }
 
@@ -183,7 +188,6 @@ void echo_fcnt(t_cmd *cmd)
 	i = 1;
 	while (cmd->cmd[i])
 	{
-		printf("i => 1: %d \n", i);
 		if (ft_check_echo(cmd->cmd[i]) == 1)
 			i++;
 		else 
@@ -191,7 +195,6 @@ void echo_fcnt(t_cmd *cmd)
 	}
 		if (i == 1)
 		{
-			printf("i => 2: %d \n", i);
 			while (cmd->cmd[i])
 			{
 				ft_putstr_fd(cmd->cmd[i], fd);
@@ -203,7 +206,6 @@ void echo_fcnt(t_cmd *cmd)
 		}
 		else
 		{
-			printf("i => 3 : %d \n", i);
 			while(cmd->cmd[i])
 			{
 				ft_putstr_fd(cmd->cmd[i], fd);
@@ -582,47 +584,53 @@ void    unset_fcnt(t_cmd *cmd)
 	}
 }
 
-int    ft_check_builtins(t_cmd *cmd)
+int    ft_check_builtins(t_cmd *cmd, int fd[2])
 {   
 	//redi_heredoc(cmd);
 	if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1)/*getcwd*/
 	{
 		pwd_fcnt(cmd);
+		g_env->ret_val = 1;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "cd") == 1) /*chdir fcn*/
 	{
 		cd_fcnt(cmd);
+		g_env->ret_val = 1;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "export") == 1)
 	{
 	   export_fcnt(cmd);
+	   g_env->ret_val = 1;
 	   return (1); 
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "unset") == 1)
 	{
 		unset_fcnt(cmd);
+		g_env->ret_val = 1;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "env") == 1)
 	{
 		env_fcnt(cmd);
+		g_env->ret_val = 1;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "exit") == 1)
 	{
 		exit_fcnt(cmd->cmd[0]);
+		g_env->ret_val = 1;
 		return (1);
 	}
 	else if (ft_strrrcmp(cmd->cmd[0], "echo") == 1) /*"\\ whit no \n;*/
 	{
 		echo_fcnt(cmd);
+		g_env->ret_val = 1;
 		return (1);
 	}
 	else 
 		return (0);
-	//printf("houlyaaa 3333 \n");
 	// else
 	//     printf("command not found \n");
 }

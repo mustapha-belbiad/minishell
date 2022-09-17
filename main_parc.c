@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/12 17:19:14 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:12:34 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ void    change_value(t_token *token)
         tmp = tmp->next;
     }
 }
+void test()
+{
+    printf("holaaa\n");    
+}
 
 int main(int ac, char **av, char **envp)
 {
@@ -95,9 +99,8 @@ int main(int ac, char **av, char **envp)
             {
                 redi_heredoc(cmd);
             }
-        
+            printf("{%d}\n", g_env->ret_val);
         }
-        
         
            
         // t_token *tmp;
