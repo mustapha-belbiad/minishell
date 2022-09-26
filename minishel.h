@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/17 02:26:03 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/25 23:37:56 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ typedef struct t_env
 	char *envir;
 	char **input;
 	int ret_val;
+	int status_num;
 	int	fd_hr[2];
 	int fd_exec[2];
+	int crtl_c;
 	struct t_env *next;
 }	t_env;
 
@@ -69,15 +71,25 @@ void	*ft_link_env(t_env *envi, char **env);
 void	ft_list_addback(t_env **lst, t_env *new);
 t_env	*ft_lstnew(void *env);
 int ft_strcmp2(char *s1, char *s2);
+int file_in(t_file *tmp, int j);
+int	check_file(char	*argv);
+int	file_output(char	*argv);
+void file_out(t_file *tmp, int j);
+int	append_mode(char	*argv);
+
+void	get_line();
 
 //---------------------------------------------------
 
 //-------- execute ----------------------------------
 void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp);
 int		redi_heredoc(t_cmd *cmd);
-void	run_exection(t_cmd *cmd, int *fd, int in_fd, int i, int size, t_env *env, char **envp);
+void	run_exection(t_cmd *cmd, int in_fd, int i, int size, char **envp);
 int		ft_lstsizeee(t_cmd *lst);
 void	here_doc(char *file);
 char	*strrr(t_env *env, char *pth);
+int	redrct_for_exec(t_cmd *cmd);
+
+void	catch_sig(int signum);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/12 05:35:36 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:01:44 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_file(char	*argv)
 	return (check);
 }
 
-int	file_out(char	*argv)
+int	file_output(char	*argv)
 {
 	int	out;
 
@@ -39,53 +39,72 @@ int	append_mode(char	*argv)
 		perror ("open");
 	return (out);
 }
-
-void here_doc(char *file)
+void hola(int sig)
+{
+	(void)sig;
+	return ;
+}
+void	here_doc(char *file)
 {
 	char *str;
 	char **rr;
 	int i;
 	
-	//g_env->fd;
+	
 	pipe(g_env->fd_hr);
 	while (1)
 	{
+		g_env->crtl_c = 1;
 		str = readline(">");
-		if (ft_strlen(file) ==  ft_strlen(str) && str != NULL)
+		if (!str)
+			break ;
+		if (str)
 		{
-			str = ft_strjoin(str, "\n");
-		//ft_putstr_fd(str, g_env->fd);
-			if (ft_strchr(file, ';') != 0)
-			{
-				rr = ft_split(file, ';');
-				if (ft_strcmp(str, rr[0]) != 0)
-				{
-				//printf("%s\n", str);
-					free(str);
-					break;
-				}
-			}
-			else if (ft_strcmp(file, str) != 0)
+			if ( str[0] != 0 && 
+				(ft_strncmp(file, str, ft_strlen(str)) == 0))
 			{
 				free(str);
-				//printf(" == >hani kharj \n");
 				break;
 			}
 			else 
 			{
+				str = ft_strjoin(str, "\n");
 				ft_putstr_fd(str, g_env->fd_hr[1]);
+				free(str);
 			}
 		}
-		else
-		{
-			str = ft_strjoin(str, "\n");
-			ft_putstr_fd(str, g_env->fd_hr[1]);
-			free(str);
-		}
-		
-		//ft_putstr_fd("\n", g_env->fd_hr[1]);
 	}
-	
+	close(g_env->fd_hr[1]);
+	g_env->crtl_c = 0;
+}
+
+int	redrct_for_exec(t_cmd *cmd)
+{
+	t_file *tmp;
+    int j;
+    int output;
+	j = 0;
+	if (cmd->file == NULL)
+		return(3);
+    tmp = cmd->file;
+	while (tmp)
+	{
+		if (tmp->e_type == 5 || tmp->e_type == 7)
+		{
+			if(file_in(tmp, j) == 0)
+				return(0);
+			// if (cmd->cmd[0] == NULL)
+			// 	break;
+		}
+		else if (tmp->e_type == 6 || tmp->e_type == 8)
+		{
+			file_out(tmp, j);
+			// if (cmd->cmd[0] == NULL)
+			// 	break;
+		}
+		tmp = tmp->next;
+	}
+    return (1);
 }
 
 int redi_heredoc(t_cmd *cmd)
@@ -93,57 +112,28 @@ int redi_heredoc(t_cmd *cmd)
     t_file *tmp;
     int input;
     int output;
-
+	int j = 1;
+	if (cmd->file == NULL)
+		return(3);
     tmp = cmd->file;
-			while (tmp)
-			{
-				if (tmp->e_type == 5)
-				{
-					input = check_file(tmp->file_name);
-					if (input == -1)
-					{
-						perror ("open");
-						return(0);
-					}
-					if (cmd->cmd[0] == NULL)
-						break;
-					dup2(input, 0);
-				}
-				else if (tmp->e_type == 6)
-				{
-					output = file_out(tmp->file_name);
-					if (cmd->cmd[0] == NULL)
-						break;
-					dup2(output, 1);
-					//close(output);
-				}
-				else if (tmp->e_type == 8)
-				{
-					output = append_mode(tmp->file_name);
-					if (cmd->cmd[0] == NULL)
-						break;
-					dup2(output, 1);
-				}
-				else if (tmp->e_type == 7) // herdoc
-				{
-	
-					here_doc(tmp->file_name);
-					
-					if (cmd->cmd[0] == NULL)
-						break;
-					else 
-					{
-						dup2(g_env->fd_hr[0], 0);
-						close(g_env->fd_hr[0]);
-						close(g_env->fd_hr[1]);
-					// else
-					}
-					
-					// 	dup2(g_env->fd, 0);
-				}
-				tmp = tmp->next;
-            }
-		// if (cmd->cmd[0] == NULL)
-		// 	return (0);
+	while (tmp)
+	{
+		
+
+		if (tmp->e_type == 5 || tmp->e_type == 7)
+		{
+			if (file_in(tmp, j) == 0)
+				return(0);
+			// if (cmd->cmd[0] == NULL)
+			// 	break;
+		}
+		else if (tmp->e_type == 6 || tmp->e_type == 8)
+		{
+			file_out(tmp, j);
+			// if (cmd->cmd[0] == NULL)
+			// 	break;
+		}
+		tmp = tmp->next;
+	}
     return (1);
 }

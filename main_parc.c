@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/17 02:31:12 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:24:37 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,21 @@ int main(int ac, char **av, char **envp)
     eniv = ft_link_env(eniv, mini->env);
     g_env = ft_link_env(eniv, mini->env);
     g_env->ret_val = 0;
+    g_env->crtl_c = 0;
+    
+    int fd;
+    get_line();
     while(1)
     {
+        fd = dup(0);
+
         str = readline("minishel>");
+        //printf("strat again \n");
+        if(str == NULL)
+        {
+            printf("exit\n");
+            exit(1);
+        }
         if(str[0] && chack_readl(str) == 1)
         {
             add_history(str);
@@ -90,19 +102,25 @@ int main(int ac, char **av, char **envp)
             cmd = fill_cmd(mini->token, cmd);
 
             
-            if (cmd->cmd[0] != NULL)
+
+            // if (cmd->next == NULL && (ft_check_builtins(cmd, g_env->fd_exec) == 1))
+            // {
+            //      //if (ft_check_builtins(cmd, g_env->fd_exec) == 1)
+            //      printf("================================ \n");
+		    //         g_env->ret_val = 1;
+            // }    
+            if (cmd != NULL)
             {
-            // redi_heredoc(cmd);
-                //if (ft_check_builtins(cmd, eniv) == 0)
-                ft_execute(cmd, eniv, mini, envp);
+                    ft_execute(cmd, eniv, mini, envp);
             }
-            else if(cmd->file != NULL)
-            {
-                redi_heredoc(cmd);
-            }
-            printf("{%d}\n", g_env->ret_val);
+            // if(cmd->file != NULL)
+            // { 
+            //     printf("come estas \n ");
+            //     redi_heredoc(cmd);
+            // }
+           // printf("============> = \n");    
         }
-        
+         
            
         // t_token *tmp;
         // tmp = mini->token;
@@ -146,5 +164,7 @@ int main(int ac, char **av, char **envp)
         mini->token = NULL;
         cmd = NULL;
         free(str);
+        str = 0;
+        dup2(fd,0);
     }
 }

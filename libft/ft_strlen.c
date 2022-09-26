@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:21:30 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/05/24 06:53:57 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:15:56 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ size_t	ft_strlen(const char	*s)
 {
 	char	*l;
 	size_t	i;
-
+	// if (!s)
+	// 	return(0);
 	l = (char *)s;
 	i = 0;
 	while (l[i])

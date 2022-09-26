@@ -17,9 +17,13 @@ SRC = main_parc.c \
 	./builtins/ft_check_cmd.c \
 	./builtins/env_link.c \
 	./execute/ft_execute.c \
-	./execute/redi_here.c
+	./execute/redi_here.c \
+	./execute/file_in.c \
+	./signals/signals.c
+	
+RDLINE  := -L /Users/mbelbiad/goinfre/.brew/opt/readline/lib -I /Users/mbelbiad/goinfre/.brew/opt/readline/include
 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror
 ARG = -o
 
 all : $(NAME)
@@ -27,8 +31,8 @@ all : $(NAME)
 # -g3  -fsanitize=address 
 
 $(NAME): $(SRC)
-	make -C ./libft
-	$(CC) $(FLA) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a -g3  -fsanitize=address 
+	@make -C ./libft
+	@$(CC) $(FLA) -lreadline $(SRC) $(RDLINE) $(ARG) minishel ./libft/libft.a 
 
 clean : 
 	rm -f $(NAME)

@@ -1,43 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/22 04:20:32 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/24 15:43:55 by mbelbiad         ###   ########.fr       */
+/*   Created: 2022/09/25 18:58:06 by mbelbiad          #+#    #+#             */
+/*   Updated: 2022/09/26 02:34:28 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdio.h>
+#include "../minishel.h"
 
-char	*ft_strjoin(char const	*s1, char const	*s2)
+void	catch_sig(int signum)
 {
-	int		i;
-	int		j;
-	char	*str;
+	int fd;
+	
+	if (g_env->crtl_c == 1)
+	{	
+		// g_env->crtl_c = 1;
+		printf("\n");
+		close(0);
+		g_env->crtl_c = 0;
+	}
+	else
+	{
+		(void)signum;
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();	
+	}
+	
+}
 
-	if (!s1 || !s2)
-		return (NULL);
-	i = ft_strlen(s1) + ft_strlen(s2);
-	str = malloc(sizeof(char) * (i + 1));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		str[i] = s2[j];
-		j++;
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+void	get_line(void)
+{
+	signal(SIGINT, catch_sig);
+	signal(SIGQUIT, SIG_IGN);
 }

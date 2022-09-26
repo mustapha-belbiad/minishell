@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 15:18:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/17 02:22:58 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:14:48 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,11 @@ int	ft_strrrcmp(const char *s1, const char *s2)
 	int	i;
 
 	i = 0;
-	// if (ft_strlen(s1) != ft_strlen(s2))
-	// {
-	//     printf(" < %zu >   < %zu > \n", ft_strlen(s1), ft_strlen(s2));
-	//     return(0);
-	// }
 	while ((s1[i] != '\0' && s2[i] != '\0'))
 	
 	{
 		if (s1[i] != s2[i])
 		{
-		//    printf("kjgfkwjbvadkjbvekjlbe +++++ wf ==> %c vss %c   ' %d '\n", s1[i], s2[i], i); 
 			return (0);
 		}
 		i++;
@@ -48,77 +42,40 @@ int	ft_strrrcmp(const char *s1, const char *s2)
 		return(0);
 	}
 	return(1);
-	// if (ft_strlen(s1) == ft_strlen(s2))
-	// {
-	//     //printf("kjgfkwjbvadkjbvekjlbewf \n");
-	//     return (1);
-	// }
-	// else
-	// {
-	//     printf("kjgfkwjbvadkjbvekjlbewf %c \n", s1);
-	//     return (0);
-	// }
 }
-
-void builtins_redirect(t_cmd *cmd)
+int redirect_builtings(t_cmd *cmd)
 {
 	t_file *tmp;
-	int out;
-	int in;
+	int fd;
+	
 	tmp = cmd->file;
 	while (tmp)
 	{
-		if(tmp->e_type == 6)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-			cmd->cmd[0] = ft_strjoin(cmd->cmd[0], "\n");
-			ft_putstr_fd(cmd->cmd[0], out);
-			in  = 0;
-		}
+		if (tmp->e_type == 6)
+			fd = file_output(tmp->file_name);
 		else if (tmp->e_type == 8)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_APPEND, 0777);
-			cmd->cmd[0] = ft_strjoin(cmd->cmd[0], "\n");
-			ft_putstr_fd(cmd->cmd[0], out);
-			 in  = 0;
-		}
-		else if (tmp->e_type == 7)
-		{
-			here_doc(tmp->file_name);
-			printf("%s \n", cmd->cmd[0]);
-			in  = 0;
-		}
-		else 
-			in = 1;
+			fd = append_mode(tmp->file_name);
 		tmp = tmp->next;
 	}
-	if (in == 1)
-		printf("%s \n", cmd->cmd[0]);
+	return(fd);
 }
-
 void pwd_fcnt(t_cmd *cmd)
 {
-	//int out;
+	int fd;
 	
+	if (cmd->file != NULL)
+		fd = redirect_builtings(cmd);
+	else 
+		fd = 1;
 	free(cmd->cmd[0]);
 	cmd->cmd[0] = malloc(1024 * sizeof(char *));
-	// redi_heredoc(cmd);
 	if (getcwd(cmd->cmd[0], 1024) == NULL)
 	{
 		printf("faild \n");
 		return ;
 	}
-	if (cmd->file != 0)
-		builtins_redirect(cmd);
-	// else if (cmd->next->cmd[0] != NULL)
-	// {
-	// 	dup2(fd[1], 1);
-	// 	close(fd[1]);
-	// }
-	else
-	{
-		printf("%s \n", cmd->cmd[0]);
-	}
+	ft_putstr_fd(cmd->cmd[0], fd);
+	ft_putstr_fd("\n", fd);
 }
 
 void exit_fcnt(char *cmd)
@@ -143,42 +100,14 @@ int    ft_check_echo(char *cmd)
 	return(0);
 }  
 
-int echo_redirect(t_cmd *cmd)
-{
-	 t_file *tmp;
-	char    *tm;
-	int out;
-	
-	out = 1;
-	tmp = cmd->file;
-	while (tmp)
-	{
-		if(tmp->e_type == 6)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-		}
-		else if (tmp->e_type == 8)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_APPEND, 0777);
-		}
-		else if (tmp->e_type == 7)
-		{
-			here_doc(tmp->file_name);
-			out = 1;
-		}
-		tmp = tmp->next;
-	}
-	return (out);
-}
-
 void echo_fcnt(t_cmd *cmd)
 {
 	int i;
 	int fd;
-	
-	if (cmd->file != 0)
-		fd = echo_redirect(cmd);
-	else
+
+	if (cmd->file != NULL)
+		fd = redirect_builtings(cmd);
+	else 
 		fd = 1;
 	if (cmd->cmd[1] == NULL)
 	{
@@ -243,107 +172,124 @@ void    ft_remove_Quot(t_env **cmd)
 		(*cmd)->envir = ft_strjoin(sp[0], sp[1]);
 }
 
-void    env_redi(t_cmd *cmd)
+void    env_fcnt(t_cmd *cmd)
 {
-	t_file *tmp;
-	t_env *tmp2;
-	char    *tm;
-	int out;
+	t_env *tmp;
+	int fd;
 
-	tmp2 = g_env;
-	tmp = cmd->file;
-	while (tmp)
+	if (cmd->file != NULL)
+		fd = redirect_builtings(cmd);
+	else 
+		fd = 1;
+	tmp = g_env;
+	while(tmp != NULL)
 	{
-		if(tmp->e_type == 6)
+		if (ft_check_env(tmp->envir) == 0)
+			tmp =tmp->next;
+		else 
 		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-			while(tmp2)
-			{
-				if (ft_check_env(tmp2->envir) == 0)
-					tmp2 = tmp2->next;
-				else 
-				{
-					ft_remove_Quot(&tmp2);
-				   tm = ft_strjoin(tmp2->envir, "\n");
-					ft_putstr_fd(tm, out);
-					tmp2 = tmp2->next;
-				}
-			}
+			ft_remove_Quot(&g_env);
+			ft_putstr_fd(tmp->envir, fd);
+			ft_putstr_fd("\n", fd);
+			tmp =tmp->next;
 		}
-		else if (tmp->e_type == 8)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_APPEND, 0777);
-			 while(tmp2)
-			{
-				if (ft_check_env(tmp2->envir) == 0)
-					tmp2 = tmp2->next;
-				else 
-				{
-					ft_remove_Quot(&tmp2);
-				   tm = ft_strjoin(tmp2->envir, "\n");
-					ft_putstr_fd(tm, out);
-					tmp2 = tmp2->next;
-				}
-			}
-		}
-		else if (tmp->e_type == 7)
-		{
-			here_doc(tmp->file_name);
-			while (tmp2 != NULL)
-			{
-				printf("%s\n", tmp2->envir);
-				tmp2 = tmp2->next;
-			}
-		}
-		tmp = tmp->next;
 	}
-	free(tm);
 }
 
-void    env_fcnt(t_cmd *cmd)
+void	change_for_pwd(t_env *g_env, char *change)
 {
 	t_env *tmp;
 	
 	tmp = g_env;
-   if (cmd->file != 0)
-		env_redi(cmd);
-	else 
+	while (tmp)
 	{
-		 while(tmp != NULL)
+		if (ft_strncmp(tmp->envir, "PWD", 3) == 0)
 		{
-			if (ft_check_env(g_env->envir) == 0)
-			   tmp =tmp->next;
-			else 
-			{
-				ft_remove_Quot(&g_env);
-				printf("%s\n",tmp->envir);
-			   tmp =tmp->next;
-			}
+			change = ft_strjoin("PWD=", change);
+			tmp->envir = ft_strdup(change);
+			printf("after {%s}\n", tmp->envir);
+			break ;
 		}
-   
+		tmp = tmp->next;
 	}
-   //g_env = tmp;
+	free(change);
 }
 
+void change_for_oldpwd(t_env *g_env, char *change)
+{
+	t_env *tmp;
+	
+	printf("{%s}\n", change);
+	tmp = g_env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->envir, "OLDPWD", 6) == 0)
+		{
+			change = ft_strjoin("OLDPWD=", change);
+			tmp->envir = ft_strdup(change);
+			printf("after {%s}\n", tmp->envir);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	free(change);
+}
+
+void change_env(t_env *g_env, char *value)
+{
+	t_env *tmp;
+	char *change;
+
+	if (ft_strncmp(value, "OLDPWD", 6) == 0)
+	{
+		change = strrr(g_env, "PWD");
+		if (change == NULL)
+		{
+			printf("holaaa \n");
+			return ;
+		}
+		change = ft_substr(change, 4, ft_strlen(change));
+		change_for_oldpwd(g_env, change);
+		free(change);
+	}
+	else if(ft_strncmp(value, "PWD", 3) == 0)
+	{
+		change =  malloc(1024 * sizeof(char *));
+		if (getcwd(change, 1024) == NULL)
+		{
+			printf("faild \n");
+			return ;
+		}
+		change_for_pwd(g_env, change);
+		free(change);
+	}
+	
+}
 void    cd_fcnt(t_cmd *cmd)
 {
 	char *str;
 	t_env *env;
 	char *home;
-
+	char *pwd;
+	if (cmd->file != NULL)
+		redirect_builtings(cmd);
 	env = g_env;
 	str = malloc(sizeof(char *));
 	if (cmd->cmd[1] == NULL)
 	{
 		
 		home = strrr(env, "HOME=");
+		if (home == NULL)
+			return ;
 		str = ft_substr(home, 6, ft_strlen(home));
 		str = ft_strjoin("/", str);
 	}
 	else
 		str = ft_strdup(cmd->cmd[1]);
+	change_env(g_env, "OLDPWD");
 	if (chdir(str) == -1)
 		printf("No such file or directory \n");
+	change_env(g_env, "PWD");
 	free(str);
 }
 int ft_search(char *str, char c)
@@ -366,19 +312,23 @@ void    ft_check_Quot(t_cmd **cmd)
 	char **sp;
 	t_cmd *tmp;
 	int i;
+	char *check;
+	
 	
 	i = 1;
 	tmp = (*cmd);
 	while (tmp->cmd[i])
 	{
+		check = ft_strchr(tmp->cmd[i], '=');
 		sp = ft_split(tmp->cmd[i], '=');
-		if (sp == NULL)
+		if (sp == NULL || sp[0] == NULL)
 			break;
+		if (check && check[1] == '=')
+			sp[1] = ft_substr(check, 1, ft_strlen(check)); 
 		if ((sp[1] != NULL && sp[1][0] == '"') || sp[1] == NULL)
 			i++;
 		else if (ft_search(tmp->cmd[i], '=') == 1 && sp[1] == NULL)
 		{
-			 printf(" {} == {}");
 			tmp->cmd[i]= ft_strjoin(tmp->cmd[i], "\"\"");
 			i++;
 		}
@@ -389,7 +339,6 @@ void    ft_check_Quot(t_cmd **cmd)
 			sp[1] = ft_strjoin("=", sp[1]);
 			free(tmp->cmd[i]);
 			tmp->cmd[i]= ft_strjoin(sp[0], sp[1]);
-			printf(" -{%s}- \n",  tmp->cmd[i]);
 			i++;
 		}
 	}
@@ -399,14 +348,17 @@ int check_exist(t_cmd *cmd, int i)
 {
 	char **sp;
    t_env *tmp;
-	
+   
 	sp = ft_split(cmd->cmd[i], '=');
-	//  printf("sp[0] : {%s} \n", sp[0]);
-	//  printf("sp[1] : {%s} \n", sp[1]);
+	if (ft_isalpha(sp[0][0]) != 1)
+	{
+		printf("not valid \n");
+		return(0);
+	}
 	tmp = g_env;
 	while(tmp != NULL)
 	{
-		if (ft_strcmp2(sp[0],tmp->envir) == 1)
+		if (sp[0] && ft_strcmp2(sp[0],tmp->envir) == 1)
 		{   
 			printf("cmd-> : {%s} \n", cmd->cmd[i]);
 			if (sp[1] == NULL)
@@ -423,61 +375,17 @@ int check_exist(t_cmd *cmd, int i)
 		}
 		tmp = tmp->next;
 	}
-	free(sp);
-   // (*env) = tmp;
+	//free(sp);
 	return(1);
-}
-
-void    export_redi(t_cmd *cmd)
-{
-	t_file *tmp;
-	t_env *tmp2;
-	char    *tm;
-	int out;
-	int in;
-	tmp2 = g_env;
-	tmp = cmd->file;
-	while (tmp)
-	{
-		if(tmp->e_type == 6)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-			while(tmp2)
-			{
-				tm = ft_strjoin(tmp2->envir, "\n");
-				ft_putstr_fd(tm, out);
-				tmp2 = tmp2->next;
-			}
-		}
-		else if (tmp->e_type == 8)
-		{
-			out = open(tmp->file_name, O_CREAT | O_WRONLY | O_APPEND, 0777);
-			while(tmp2)
-			{
-				tm = ft_strjoin(tmp2->envir, "\n");
-				ft_putstr_fd(tm, out);
-				tmp2 = tmp2->next;
-			}
-		}
-		else if (tmp->e_type == 7)
-		{
-			here_doc(tmp->file_name);
-			while (tmp2 != NULL)
-			{
-				printf("%s ", "declare -x");
-				printf("%s\n", tmp2->envir);
-				tmp2 = tmp2->next;
-			}
-		}
-		tmp = tmp->next;
-	}
-	free(tm);
 }
 
 int ft_check_unset(char *cmd)
 {
 	int i;
 	
+	
+	if (cmd == NULL || cmd[0] == '\0')
+		return(0);
 	if (cmd[0] >= '0' && cmd[0] <= '9')
 		return (0);
 	if (cmd[0] == '_')
@@ -491,7 +399,6 @@ int ft_check_unset(char *cmd)
 			|| (cmd[i] >= 'A' && cmd[i] <= 'Z')
 			|| cmd[i] == '_')
 		{
-			//printf("%c \n", cmd[i]);
 			i++;
 		}
 		else
@@ -504,38 +411,45 @@ void    export_fcnt(t_cmd *cmd)
 {
 	t_env *tmp;
 	int i;
+	int fd;
 	
+	if (cmd->file != NULL)
+		fd = redirect_builtings(cmd);
+	else 
+		fd = 1;
 	if (cmd->cmd[1] == NULL)
 	{
 		tmp =  g_env;
-		if (cmd->file != 0)
-			export_redi(cmd);
-		else 
-		{
-			while (tmp != NULL)
+		if (cmd->next != NULL)
 			{
-				printf("%s ", "declare -x");
-				printf("%s\n", tmp->envir);
-				tmp = tmp->next;
+				while (tmp != NULL)
+				{
+					ft_putstr_fd("declare -x ", fd);
+					ft_putstr_fd(tmp->envir, fd);
+					ft_putstr_fd("\n", fd);
+					tmp = tmp->next;
+				}
+				
 			}
-		}
-		
+			else 
+			{
+				while (tmp != NULL)
+				{
+					ft_putstr_fd("declare -x ", fd);
+					ft_putstr_fd(tmp->envir, fd);
+					ft_putstr_fd("\n", fd);
+					tmp = tmp->next;
+				}
+			}
 	}
 	else
 	{   
 		i = 0;
 		while (cmd->cmd[++i])
 		{
-			if (ft_check_unset(cmd->cmd[i]) == 0)
-			{
-				printf("%s : not a valid identifier \n", cmd->cmd[i]);
-				return ;
-			}
 			if (check_exist(cmd, i) == 1)
 			{
-			   /// printf(" 1 :==== %s === \n", cmd->cmd[i]);
 				ft_check_Quot(&cmd);
-			   // printf("2 : ==== %s === \n", cmd->cmd[i]);
 				ft_list_addback(&g_env, ft_lstnew(cmd->cmd[i]));
 			}
 		}
@@ -551,14 +465,9 @@ void    unset_fcnt(t_cmd *cmd)
 	t_env *head;
 	t_cmd *cmd_tp;
 	int i  = 0;
-	if (cmd->cmd[1] == NULL)
-	{
-		if (cmd->file != 0)
-			builtins_redirect(cmd);
-		return ;
-	}
-	if (cmd->file != 0)
-		builtins_redirect(cmd);
+		
+	if (cmd->file != NULL)
+		redirect_builtings(cmd);
 	cmd_tp = cmd;
 	while (cmd_tp->cmd[++i])
 	{
@@ -569,6 +478,12 @@ void    unset_fcnt(t_cmd *cmd)
 			return ;
 		}
 		tmp1 = g_env;
+		if (ft_strcmp(cmd->cmd[i], tmp1->envir) == 1)
+		{
+			tmp1 = g_env->next;
+			g_env = tmp1;
+			return ;
+		}
 		while(tmp1 != NULL)
 		{
 			if (ft_strcmp(cmd->cmd[i], tmp1->envir) == 1)
@@ -586,7 +501,13 @@ void    unset_fcnt(t_cmd *cmd)
 
 int    ft_check_builtins(t_cmd *cmd, int fd[2])
 {   
-	//redi_heredoc(cmd);
+	// if ( cmd->next == NULL )
+	// {
+	// 	printf("holla \n");
+	// 	redrct_for_exec(cmd);
+	// }
+	if (cmd->cmd[0] == NULL)
+		return(0);
 	if (ft_strrrcmp(cmd->cmd[0], "pwd") == 1)/*getcwd*/
 	{
 		pwd_fcnt(cmd);
@@ -631,7 +552,8 @@ int    ft_check_builtins(t_cmd *cmd, int fd[2])
 	}
 	else 
 		return (0);
+	//return (0);
 	// else
-	//     printf("command not found \n");
+	printf("lololololololo 111 \n");
 }
 
