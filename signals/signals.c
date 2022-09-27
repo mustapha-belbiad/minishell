@@ -5,16 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/25 18:58:06 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/26 02:34:28 by mbelbiad         ###   ########.fr       */
+/*   Created: 2022/09/21 07:01:02 by ael-kouc          #+#    #+#             */
+/*   Updated: 2022/09/27 16:21:24 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
 
+// char	**get_linked_ar(t_env *eniv)
+// {
+// 	char	**str;
+// 	t_env	*tmp;
+// 	int		i;
+	
+// 	tmp = eniv;
+// 	i = 0;
+// 	while(tmp)
+// 	{
+// 		tmp = tmp->next;
+// 		i++;
+// 	}
+// 	tmp = eniv;
+// 	str = malloc(sizeof(char *) * i + 1);
+// 	i = 0;
+// 	while(tmp)
+// 	{
+// 		str[i] = ft_strdup(tmp->envir);
+// 		i++;
+// 		tmp = tmp->next;
+// 	}
+// 	str[i] = NULL;
+// 	return(str);
+// }
+
 void	catch_sig(int signum)
 {
-	int fd;
+	//int fd;
 	
 	if (g_env->crtl_c == 1)
 	{	

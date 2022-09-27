@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:25:02 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/07/01 22:43:03 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/27 15:35:37 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	**ft_split(char const *s, char c);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
-char    *ft_realloc(char *str, size_t size);
-char    *ft_strcat(char *dest, char *src);
-void    ft_putstr(char *str);
-int     ft_strcmp(char *s1, char *s2);
-int     ft_isalnum2(char c);
+char	*ft_realloc(char *str, size_t size);
+char	*ft_strcat(char *dest, char *src);
+void	ft_putstr(char *str);
+int		ft_strcmp(char *s1, char *s2);
+int		ft_isalnum2(char c);
 
 #endif

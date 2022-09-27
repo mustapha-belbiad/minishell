@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:22:40 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/10 16:01:52 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:06:21 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 		j--;
 	return (ft_substr(s1, i, (j - i) + 1));
 }
-

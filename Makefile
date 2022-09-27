@@ -14,16 +14,23 @@ SRC = main_parc.c \
 	./src/end_vers_outils.c \
 	./src/end_vers.c \
 	./src/get_list_of_cmd.c \
+	./src/norm1.c \
+	./src/norm2.c \
+	./src/norm3.c \
+	./src/norm4.c \
 	./builtins/ft_check_cmd.c \
 	./builtins/env_link.c \
+	./builtins/pwd_cd_fcnt.c \
+	./builtins/export_fcnt.c \
+	./builtins/export2_fcnt.c \
+	./builtins/unset_fcnt.c \
+	./builtins/echo_fcnt.c \
 	./execute/ft_execute.c \
 	./execute/redi_here.c \
 	./execute/file_in.c \
 	./signals/signals.c
-	
-RDLINE  := -L /Users/mbelbiad/goinfre/.brew/opt/readline/lib -I /Users/mbelbiad/goinfre/.brew/opt/readline/include
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -I/Users/mbelbiad/goinfre/.brew/Cellar/readline/8.1.2/include 
 ARG = -o
 
 all : $(NAME)
@@ -32,7 +39,8 @@ all : $(NAME)
 
 $(NAME): $(SRC)
 	@make -C ./libft
-	@$(CC) $(FLA) -lreadline $(SRC) $(RDLINE) $(ARG) minishel ./libft/libft.a 
+	@$(CC) $(FLAGS) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a -g3 -fsanitize=address -L/Users/mbelbiad/goinfre/.brew/Cellar/readline/8.1.2/lib
+
 
 clean : 
 	rm -f $(NAME)

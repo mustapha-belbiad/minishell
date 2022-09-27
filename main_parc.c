@@ -6,11 +6,12 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/26 00:24:37 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 16:22:42 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishel.h"
+
 int chack_readl(char *str)
 {
     int i;
@@ -28,7 +29,6 @@ int chack_readl(char *str)
 void    change_value(t_token *token)
 {
     t_token *tmp;
-    int     i;
     
     tmp = token;
     while(tmp)
@@ -53,24 +53,66 @@ void    change_value(t_token *token)
         tmp = tmp->next;
     }
 }
-void test()
+
+void    free_token(t_token **token)
 {
-    printf("holaaa\n");    
+    t_token *tmp;
+    
+    while((*token))
+    {
+        tmp = (*token);
+        *token = (*token)->next;
+        free(tmp->value);
+        free(tmp);
+    }
+}
+
+void    free_cmd(t_cmd *cmd)
+{
+    t_cmd   *tmpcmd;
+    t_file  *tmpfile;
+    int i;
+    
+    while(cmd)
+    {
+        tmpcmd = cmd;
+        while(tmpcmd->file)
+        {
+            tmpfile = tmpcmd->file;
+            tmpcmd->file = tmpcmd->file->next;
+            free(tmpfile->file_name);
+            free(tmpfile);
+        }
+        i = 0;
+        if(tmpcmd->cmd)
+        {
+             while(tmpcmd->cmd[i])
+            {
+                free(tmpcmd->cmd[i]);
+                i++;
+            }
+            free(tmpcmd->cmd);
+        }
+        cmd = cmd->next;
+        free(tmpcmd);
+    }
 }
 
 int main(int ac, char **av, char **envp)
 {
     t_mini  *mini;
-    char    *str;
+    char    *str = NULL;
     t_cmd   *cmd;
     t_file  *files;
-    t_cmd   *tmp1;
+ //   t_cmd   *tmp1 = NULL;
     t_token *tmpv;
+  //  char    **envb;
 
     t_env   *eniv;
 
     eniv = malloc(sizeof(t_env));
-    
+    ac = 0;
+    av = NULL;
     files = NULL;
     mini = malloc(sizeof(t_mini));
     mini->env = get_env(envp);
@@ -80,14 +122,13 @@ int main(int ac, char **av, char **envp)
     g_env->ret_val = 0;
     g_env->crtl_c = 0;
     
-    int fd;
+    int fd ;
     get_line();
     while(1)
     {
+        // envb = get_linked_ar(eniv);
         fd = dup(0);
-
-        str = readline("minishel>");
-        //printf("strat again \n");
+        str = readline("minishel> ");
         if(str == NULL)
         {
             printf("exit\n");
@@ -101,26 +142,23 @@ int main(int ac, char **av, char **envp)
             tmpv = mini->token;
             cmd = fill_cmd(mini->token, cmd);
 
-            
-
-            // if (cmd->next == NULL && (ft_check_builtins(cmd, g_env->fd_exec) == 1))
-            // {
-            //      //if (ft_check_builtins(cmd, g_env->fd_exec) == 1)
-            //      printf("================================ \n");
-		    //         g_env->ret_val = 1;
-            // }    
             if (cmd != NULL)
             {
-                    ft_execute(cmd, eniv, mini, envp);
+                ft_execute(cmd, eniv, mini, envp);
             }
-            // if(cmd->file != NULL)
-            // { 
-            //     printf("come estas \n ");
+            
+            // if (cmd != NULL && cmd->cmd[0] != NULL)
+            // {
+            // // redi_heredoc(cmd);
+            //     //if (ft_check_builtins(cmd, eniv) == 0)
+            //     ft_execute(cmd, eniv, mini, envp);
+            // }
+            // else if(cmd != NULL && cmd->file != NULL)
+            // {
             //     redi_heredoc(cmd);
             // }
-           // printf("============> = \n");    
         }
-         
+        
            
         // t_token *tmp;
         // tmp = mini->token;
@@ -147,7 +185,7 @@ int main(int ac, char **av, char **envp)
         //     i = 0;
         //     printf("-------------cmd------------/\n");
         //     while(tmp1->cmd[i])
-        //         printf("{%s}\n", tmp1->cmd[i++]);    
+        //         printf("{%s}\n", tmp1->cmd[i++]);
         //     t_file *tmpf = tmp1->file ;
         //     printf("-------------file------------/\n");
 
@@ -157,10 +195,10 @@ int main(int ac, char **av, char **envp)
         //         tmpf =  tmpf->next;
         //     }
         //     printf("-------------------------/\n");
-
-        // //     printf("-------------------------");
         //     tmp1 = tmp1->next;
         // }
+        // free_token(&mini->token);
+        // free_cmd(cmd);
         mini->token = NULL;
         cmd = NULL;
         free(str);

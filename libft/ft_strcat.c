@@ -6,15 +6,16 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 14:42:20 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/07/01 15:39:47 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:03:59 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-char *ft_strcat(char *dest, char *src)
+
+char	*ft_strcat(char *dest, char *src)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (dest[i] != '\0')

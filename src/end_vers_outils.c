@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:19:36 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/08/21 04:40:36 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/25 21:35:06 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_file	*init_file(char	*f, int e_type)
 	t_file	*file;
 
 	file = malloc(sizeof(t_file));
-	file->file_name = f;
+	file->file_name = ft_strdup(f);
 	file->e_type = e_type;
 	file->next = NULL;
 	return (file);
@@ -35,11 +35,18 @@ t_cmd	*init_cmd(char **c, t_file *f)
 	cmd->cmd = c;
 	while (tmp)
 	{
-		file_add_back(&newfile, ft_strdup(tmp->file_name), tmp->e_type);
+		file_add_back(&newfile, tmp->file_name, tmp->e_type);
 		tmp = tmp->next;
 	}
 	cmd->file = newfile;
 	cmd->next = NULL;
+	while (f)
+	{
+		tmp = f;
+		f = f->next;
+		free(tmp->file_name);
+		free(tmp);
+	}
 	return (cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/26 00:01:44 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 00:53:25 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void hola(int sig)
 void	here_doc(char *file)
 {
 	char *str;
-	char **rr;
-	int i;
+	//char **rr;
+	//int i;
 	
 	
 	pipe(g_env->fd_hr);
@@ -82,7 +82,7 @@ int	redrct_for_exec(t_cmd *cmd)
 {
 	t_file *tmp;
     int j;
-    int output;
+   // int output;
 	j = 0;
 	if (cmd->file == NULL)
 		return(3);
@@ -110,8 +110,8 @@ int	redrct_for_exec(t_cmd *cmd)
 int redi_heredoc(t_cmd *cmd)
 {
     t_file *tmp;
-    int input;
-    int output;
+    //int input;
+    //int output;
 	int j = 1;
 	if (cmd->file == NULL)
 		return(3);

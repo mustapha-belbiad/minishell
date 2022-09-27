@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 10:07:26 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/12 02:29:54 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/17 03:52:16 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ char	**return_cmd(char *str)
 	str = change_value_cmd(str);
 	spl = ft_split(str, ' ');
 	spl = change_value2(spl);
-	while(spl[i])
+	while (spl[i])
 	{
 		j = 0;
-		while(spl[i][j])
+		while (spl[i][j])
 		{
-			if(spl[i][j] == 127)
+			if (spl[i][j] == 127)
 				spl[i][j] = ' ';
 			j++;
 		}
@@ -108,13 +108,13 @@ char	**return_cmd(char *str)
 int	red_flag(t_token *token)
 {
 	if (check_err_quote(token) == 0)
-		return(1);
+		return (1);
 	else if (check_err_red(token) == 0)
-		return(1);
+		return (1);
 	else if (check_err_pip(token) == 0)
-		return(1);
+		return (1);
 	else
-		return(0);
+		return (0);
 }
 
 char	*get_name_of_file(t_token *tmp)
@@ -124,76 +124,77 @@ char	*get_name_of_file(t_token *tmp)
 
 	tmp = tmp->next;
 	str = tmp->value;
-	while(tmp->next->e_type == S_Q || tmp->next->e_type == D_Q)
+	while (tmp->next->e_type == S_Q || tmp->next->e_type == D_Q)
 	{
 		tmp = tmp->next;
 		temp = str;
 		str = ft_strjoin(str, tmp->value);
 		free(temp);
 	}
-	return(str);
+	return (str);
 }
 
-char	*ft_change(t_token *tmp)
-{
-	char	*c;
-	char	*str;
-	char	*tmp2;
-	
-	c = ft_strdup("~");
-	str = ft_strjoin(c, tmp->value);
-	tmp2 = str;
-	str = ft_strjoin(str, c);
-	free(tmp2);
-	free(c);
-	free(tmp->value);
-	return(str);
-}
+// char	*ft_change(t_token *tmp)
+// {
+// 	char	*c;
+// 	char	*str;
+// 	char	*tmp2;
 
-t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
-{
-	t_token	*tmp;
-	t_file	*file;
-	char	*tmp1;
-	char	*str;
+// 	c = ft_strdup("~");
+// 	str = ft_strjoin(c, tmp->value);
+// 	tmp2 = str;
+// 	str = ft_strjoin(str, c);
+// 	free(tmp2);
+// 	free(c);
+// 	free(tmp->value);
+// 	return(str);
+// }
 
-	if (red_flag(token) == 1)
-	{
-		printf("syntax error\n");
-		return(NULL);
-	}	
-	tmp = token;
-	// tmp = tmp->next;
-	file = NULL;
-	str = ft_strdup("\0");
-	change_value(token);
-	while (tmp)
-	{	
-		if (tmp->e_type == D_REDIRECT_IN || tmp->e_type == D_REDIRECT_OT
-			|| tmp->e_type == REDIRECT_IN || tmp->e_type == REDIRECT_OT)
-		{
-			file_add_back(&file, tmp->next->value, tmp->e_type);
-			tmp = tmp->next;
-		}
-		else if (tmp->e_type == D_Q || tmp->e_type == S_Q
-			|| tmp->e_type == CMD_WORD || tmp->e_type == SPACE)
-		{
-			if(tmp->e_type == D_Q || tmp->e_type == S_Q)
-				tmp->value = ft_change(tmp);
-			tmp1 = str;
-			str = ft_strjoin(str, tmp->value);
-			free(tmp1);
-		}
-		else if (tmp->e_type == PIP)
-		{
-			cmd_add_back(&cmd, return_cmd(str), file);
-			file = NULL;
-			str = ft_strdup("");
-		}
-		tmp = tmp->next;
-	}
-	if (file || str)
-		cmd_add_back(&cmd, return_cmd(str), file);
-	get_null(token, cmd);
-	return (cmd);
-}
+// t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
+// {
+// 	t_token	*tmp;
+// 	t_file	*file;
+// 	char	*tmp1;
+// 	char	*str;
+
+// 	if (red_flag(token) == 1)
+// 	{
+// 		printf("syntax error\n");
+// 		return(NULL);
+// 	}	
+// 	tmp = token;
+// 	// tmp = tmp->next;
+// 	file = NULL;
+// 	str = ft_strdup("\0");
+// 	change_value(token);
+// 	change_value5(token);
+// 	while (tmp)
+// 	{	
+// 		if (tmp->e_type == D_REDIRECT_IN || tmp->e_type == D_REDIRECT_OT
+// 			|| tmp->e_type == REDIRECT_IN || tmp->e_type == REDIRECT_OT)
+// 		{
+// 			file_add_back(&file, tmp->next->value, tmp->e_type);
+// 			tmp = tmp->next;
+// 		}
+// 		else if (tmp->e_type == D_Q || tmp->e_type == S_Q
+// 			|| tmp->e_type == CMD_WORD || tmp->e_type == SPACE)
+// 		{
+// 			if(tmp->e_type == D_Q || tmp->e_type == S_Q)
+// 				tmp->value = ft_change(tmp);
+// 			tmp1 = str;
+// 			str = ft_strjoin(str, tmp->value);
+// 			free(tmp1);
+// 		}
+// 		else if (tmp->e_type == PIP)
+// 		{
+// 			cmd_add_back(&cmd, return_cmd(str), file);
+// 			file = NULL;
+// 			str = ft_strdup("");
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	if (file || str)
+// 		cmd_add_back(&cmd, return_cmd(str), file);
+// 	get_null(token, cmd);
+// 	return (cmd);
+// }

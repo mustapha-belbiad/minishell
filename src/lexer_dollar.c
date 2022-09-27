@@ -3,40 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 16:41:57 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/17 02:38:31 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:36:59 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
+
 int	stlen(char *str)
 {
 	int	i;
 
 	i = 0;
-	while(str[i] != '=')
+	while (str[i] != '=')
 		i++;
-	return(i);
+	return (i);
 }
 
 int	ft_strncmpp(char *str, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i] != c)
+	while (str[i] != c)
 		i++;
-	return(i);
+	return (i);
 }
 
-int test_cmp(char *str, char *str1)
+int	test_cmp(char *str, char *str1)
 {
-	if(ft_strlen(str) <= ft_strncmpp(str1, '='))
-		return(ft_strncmpp(str1, '='));
+	if (ft_strlen(str) <= (size_t)ft_strncmpp(str1, '='))
+		return (ft_strncmpp(str1, '='));
 	else
-		return(ft_strlen(str));
+		return (ft_strlen(str));
 }
 
 char	*check_env(char *str, char **env)
@@ -45,61 +46,37 @@ char	*check_env(char *str, char **env)
 	char	*tmp;
 
 	i = 0;
-	while(env[i])
+	while (env[i])
 	{
-		if(ft_strncmp(env[i], str, test_cmp(str, env[i])) == 0)
+		if (ft_strncmp(env[i], str, test_cmp(str, env[i])) == 0)
 		{
-			str = ft_substr(env[i], ft_strlen(str) + 1 , ft_strlen(env[i]));
-			return(str);
+			tmp = str;
+			str = ft_substr(env[i], ft_strlen(str) + 1, ft_strlen(env[i]));
+			free(tmp);
+			return (str);
 		}
 		i++;
 	}
+	tmp = str;
 	str = ft_strdup("\0");
-	return(str);
+	free(tmp);
+	return (str);
 }
 
 char	*expand(t_lexer *lexer, char **env)
 {
 	char	*str;
-	int i;
+	int		i;
 	char	*real_value;
-	char	b;
-	
+
 	i = 0;
 	lexer_advance(lexer);
 	lexer->j = lexer->i;
-	while(lexer->src[lexer->j] && (ft_isalnum(lexer->src[lexer->j])
-		|| lexer->src[lexer->j] == '_'))
+	while (lexer->src[lexer->j] && (ft_isalnum(lexer->src[lexer->j])
+			|| lexer->src[lexer->j] == '_'))
 		lexer->j++;
 	str = malloc(sizeof(char) * (lexer->j - lexer->i) + 1);
-	while(lexer->i < lexer->j)
-	{
-		str[i] = lexer->c;
-		lexer_advance(lexer);
-		i++;
-	}
-	str[i] = '\0';
-	// printf("====%s\n", str);
-	real_value = check_env(str, env);
-	lexer_back(lexer);
-	return(real_value);
-}
-
-char	*expand2(t_lexer *lexer, char **env)
-{
-	char	*str;
-	int i;
-	char	*real_value;
-	char	b;
-	
-	i = 0;
-	lexer_advance(lexer);
-	lexer->j = lexer->i;
-	while(lexer->src[lexer->j] && (ft_isalnum(lexer->src[lexer->j])
-		|| lexer->src[lexer->j] == '_') && lexer->src[lexer->j] != '$')
-		lexer->j++;
-	str = malloc(sizeof(char) * (lexer->j - lexer->i + 1));
-	while(lexer->i < lexer->j)
+	while (lexer->i < lexer->j)
 	{
 		str[i] = lexer->c;
 		lexer_advance(lexer);
@@ -108,5 +85,5 @@ char	*expand2(t_lexer *lexer, char **env)
 	str[i] = '\0';
 	real_value = check_env(str, env);
 	lexer_back(lexer);
-	return(real_value);
+	return (real_value);
 }

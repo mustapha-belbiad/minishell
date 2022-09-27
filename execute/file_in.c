@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:52:31 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/25 18:37:03 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 13:39:07 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int file_in(t_file *tmp, int j)
     if (tmp->e_type == 5)
 	{
         in = check_file(tmp->file_name);
-			if (in == -1 && j != 0)
-			{
-				perror ("open");
-				return (0);
-			}
+        if (in == -1 && j != 0)
+        {
+            perror ("open");
+            return (0);
+        }
         if (j == 0)
         {
 			dup2(in, 0);    

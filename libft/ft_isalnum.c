@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 04:10:39 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/06/29 17:46:40 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:01:22 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	ft_isalnum(int c)
 		return (0);
 }
 
-int ft_isalnum2(char c)
+int	ft_isalnum2(char c)
 {
-	if((c >= 'a' && c <= 'z')
+	if ((c >= 'a' && c <= 'z')
 		|| (c >= 'A' && c <= 'Z')
 		|| (c >= '1' && c <= '9'))
-		return(0);
-	return(1);
+		return (0);
+	return (1);
 }

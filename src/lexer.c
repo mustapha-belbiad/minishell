@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:50:32 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/17 02:32:08 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:26:02 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
 
-
 t_lexer	*init_lexer(char *src)
 {
-	t_lexer *lexer;
+	t_lexer	*lexer;
 
 	lexer = malloc(sizeof(t_lexer));
 	lexer->src = ft_strdup(src);
@@ -28,7 +27,7 @@ t_lexer	*init_lexer(char *src)
 
 void	lexer_skip_space(t_lexer *lexer)
 {
-	while(lexer->src[lexer->i] == ' ' || lexer->src[lexer->i] == '\t'
+	while (lexer->src[lexer->i] == ' ' || lexer->src[lexer->i] == '\t'
 		|| lexer->src[lexer->i] == '\n' || lexer->src[lexer->i] == '\r')
 		lexer_advance(lexer);
 }
@@ -42,82 +41,40 @@ void	lexer_advance(t_lexer *lexer)
 	}
 }
 
-char	*take_id(t_lexer *lexer, t_token *token, char **env)
+char	*take_id(t_lexer *lexer, char **env)
 {
-	char *value;
-	char *c;
-	char *tmp;
-	
-	if(lexer->src_size == 1)
-		return(get_c_as_str(lexer->c));
-	if(lexer->src[lexer->i + 1] == '?')
-	{
-		lexer_advance(lexer);
-		// lexer_advance(lexer);
-		return(ft_itoa(g_env->ret_val));
-	}
+	char	*value;
+	char	*c;
+	char	*tmp;
+
 	value = malloc(sizeof(char));
 	value[0] = '\0';
-	while(!(check_special_c(lexer->c) == 0) && lexer->c != '\0')
+	while (!(check_special_c(lexer->c) == 0) && lexer->c != '\0')
 	{
-		if(lexer->c == '$' && ft_isalnum(lexer->src[lexer->i + 1])
+		if (lexer->c == '$' && lexer->src[lexer->i + 1] == '?')
+		{
+			lexer_advance(lexer);
+			c = ft_itoa(g_env->ret_val);
+		}
+		else if (lexer->c == '$' && ft_isalnum(lexer->src[lexer->i + 1])
 			&& lexer->src[lexer->i + 1] != '_')
 			c = expand(lexer, env);
 		else
 			c = get_c_as_str(lexer->c);
 		tmp = value;
 		value = ft_strjoin(value, c);
-		free(tmp);
-		free(c);
+		free_norm(tmp, c);
 		lexer_advance(lexer);
 	}
 	lexer_back(lexer);
-	// check_after_space2(lexer, token);
-	return(value);
+	return (value);
 }
 
 void	lexer_advance_with(t_lexer *lexer, t_token *token, char *value,
 	int e_type)
 {
-	if(lexer->src[lexer->i] != '\0')
+	if (lexer->src[lexer->i] != '\0')
 		lexer_advance(lexer);
 	token_add_back(&token, value, e_type);
-}
-
-t_token	*pick_tokens(t_lexer *lexer, char **env)
-{
-	t_token *token;
-	token = init_token("START", START);
-	while(lexer->i < ft_strlen(lexer->src) && lexer->c != '\0')
-	{
-		lexer_skip_space(lexer);
-		if(check_special_c(lexer->c) == 1)
-		{
-			lexer_advance_with(lexer, token, take_id(lexer, token, env), CMD_WORD);
-			check_after_w(token, lexer);
-		}
-			
-		if(lexer->c == '|')
-			lexer_advance_with(lexer, token, "|", PIP);
-		if(lexer->c == '>' && lexer->src[lexer->i + 1] == '>')
-		{
-			lexer_advance(lexer);
-			lexer_advance_with(lexer, token, ">>", D_REDIRECT_OT);
-		}
-		if(lexer->c == '<' && lexer->src[lexer->i + 1] == '<')
-		{
-			lexer_advance(lexer);
-			lexer_advance_with(lexer, token, "<<", D_REDIRECT_IN);
-		}
-		if(lexer->c == '>' && lexer->src[lexer->i + 1] != '>')
-			lexer_advance_with(lexer, token, ">", REDIRECT_OT);
-		if(lexer->c == '<' && lexer->src[lexer->i + 1] != '<')
-			lexer_advance_with(lexer, token, "<", REDIRECT_IN);
-		if(lexer->c == '\'')
-			pick_bitwen_sq(lexer, token, env);
-		if(lexer->c == '"')
-			pick_bitwen_dq(lexer, token, env);
-	}
-	// ft_list_remove_if(&token);
-	return(token);
+	free(value);
 }

@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/26 17:26:57 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 20:07:52 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*strrr(t_env *env, char *pth)
 {
-	char	*re;
+	//char	*re;
 	int		i;
 
 	i = 0;
@@ -61,7 +61,7 @@ char	**get_the_path(t_cmd *cmd)
 {
 	char	*Path;
 	char	**str;
-	char	**rest;
+	//char	**rest;
 	char	**Pth;
 	int i;
 
@@ -79,7 +79,8 @@ char	**get_the_path(t_cmd *cmd)
 void	run_exection(t_cmd *cmd, int in_fd, int i, int size, char **envp)
 {
 	char **comd;
-
+	
+	signal(SIGQUIT, SIG_DFL);
 	if (cmd->cmd[0] == NULL)
 		exit(0);
 	close(g_env->fd_exec[0]);
@@ -88,7 +89,7 @@ void	run_exection(t_cmd *cmd, int in_fd, int i, int size, char **envp)
 		dup2(g_env->fd_exec[1], 1);
 		close(g_env->fd_exec[1]);
 	}
-	else if (in_fd != -1)
+	if (in_fd != -1)
 	{
 		dup2(in_fd, 0);
 		close(in_fd);
@@ -96,7 +97,7 @@ void	run_exection(t_cmd *cmd, int in_fd, int i, int size, char **envp)
 	if (cmd->file!= NULL)
 		redrct_for_exec(cmd);
 	
-	if (ft_check_builtins(cmd, g_env->fd_exec) == 1)
+	if (ft_check_builtins(cmd) == 1)
 		exit(0);
 	if (access(cmd->cmd[0], F_OK) != 0)
 		comd = get_the_path(cmd);
@@ -123,8 +124,10 @@ void     ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 	int i = 0;
 	int size;
 	
+	(void)env;
+	(void)mini;
 	size = ft_lstsizeee(cmd);
-	t_cmd *tmp1;
+	//t_cmd *tmp1;
 	in_fd = -1;
 	while(cmd != NULL)
 	{
@@ -135,7 +138,7 @@ void     ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 		}
 		else
 		{
-			if (cmd->next == NULL && (ft_check_builtins(cmd, g_env->fd_exec) == 1))
+			if (cmd->next == NULL && (ft_check_builtins(cmd) == 1))
 			{
 				g_env->ret_val = 1;
 				break ;
@@ -161,10 +164,10 @@ void     ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 		
 		}
 		//if (cmd->next == NULL)
-	 close(g_env->fd_exec[1]);
-	 close(g_env->fd_exec[0]);
 	
 	 }
+	 close(g_env->fd_exec[1]);
+	 close(g_env->fd_exec[0]);
 	waitpid(pid, &g_env->status_num, 0);
 	if (pid != 0)
 	{

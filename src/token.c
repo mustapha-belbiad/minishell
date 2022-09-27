@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:51:20 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/09 17:58:46 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:24:52 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,43 @@
 
 t_token	*init_token(char *value, int e_type)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = malloc(sizeof(t_token));
-	token->value = value;
+	token->value = ft_strdup(value);
 	token->e_type = e_type;
 	token->next = NULL;
-	
-	// token->betwen_c_w = 0;//if warner == 0 cmd // warner == 1 word // warner == 2 file
 	return (token);
 }
 
 void	token_add_back(t_token **token, char *value, int e_type)
 {
-	t_token *last;
-	t_token *tmp;
-	
-	if(!*token)
+	t_token	*last;
+	t_token	*tmp;
+
+	if (!*token)
 	{
 		*token = init_token(value, e_type);
 		return ;
 	}
-	last = init_token(value, e_type); 
+	last = init_token(value, e_type);
 	tmp = (*token);
-	while(tmp->next)
+	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = last;
 }
 
-int ft_lstsize(t_token *token)
+int	ft_lstsize(t_token *token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 	int		i;
-	
+
+	i = 0;
 	tmp = token;
-	while(tmp)
+	while (tmp)
 	{
 		tmp = tmp->next;
 		i++;
 	}
-	return(i);
+	return (i);
 }
