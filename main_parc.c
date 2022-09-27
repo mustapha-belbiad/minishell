@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_parc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/27 16:22:42 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:56:06 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,13 @@ int main(int ac, char **av, char **envp)
         {
             add_history(str);
             mini->lexer = init_lexer(str);
-            mini->token = pick_tokens(mini->lexer, envp);
+            mini->token = pick_tokens(mini->lexer, g_env->envb);
             tmpv = mini->token;
             cmd = fill_cmd(mini->token, cmd);
 
             if (cmd != NULL)
             {
-                ft_execute(cmd, eniv, mini, envp);
+                ft_execute(cmd, eniv, mini, g_env->envb);
             }
             
             // if (cmd != NULL && cmd->cmd[0] != NULL)

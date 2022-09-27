@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_fcnt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 18:32:34 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 18:51:06 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:32:44 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_unset_remove(t_env *tmp1, t_cmd *cmd, int i)
 		head = tmp1;
 		tmp1 = tmp1->next;
 	}
+	change_envir();
 }
 
 void	unset_fcnt(t_cmd *cmd)
@@ -78,6 +79,7 @@ void	unset_fcnt(t_cmd *cmd)
 		{
 			tmp1 = g_env->next;
 			g_env = tmp1;
+			change_envir();
 			return ;
 		}
 		ft_unset_remove(tmp1, cmd, i);

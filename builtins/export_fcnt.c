@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_fcnt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 15:46:07 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 18:49:57 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:32:11 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	add_to_export(t_cmd *cmd)
 			}
 		}
 	}
+	change_envir();
 }
 
 void	export_fcnt(t_cmd *cmd)

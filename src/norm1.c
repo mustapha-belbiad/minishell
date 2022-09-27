@@ -6,7 +6,7 @@
 /*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 03:50:20 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/25 21:22:09 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:35:48 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_cmd	*fill_cmd(t_token *token, t_cmd *cmd)
 	if (red_flag(token) == 1)
 	{
 		printf("syntax error\n");
+		g_env->ret_val = 258;
 		return (NULL);
 	}
 	tmp = token;

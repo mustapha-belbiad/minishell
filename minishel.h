@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishel.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/27 20:05:37 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:31:41 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct t_env
 	int	fd_hr[2];
 	int fd_exec[2];
 	int crtl_c;
+	char	**envb;
 	struct t_env *next;
 }	t_env;
 
@@ -73,6 +74,7 @@ void	err_n(t_lexer *lexer, t_token *token);
 void	catch_sig(int signum);
 void	get_line();
 char	**get_linked_ar(t_env *eniv);
+void	change_envir();
 
 //----------- builtins ------------------------------
 int		ft_check_builtins(t_cmd *cmd);

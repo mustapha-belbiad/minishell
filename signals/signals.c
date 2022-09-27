@@ -3,48 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 07:01:02 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/27 16:21:24 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:03:01 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishel.h"
 
-// char	**get_linked_ar(t_env *eniv)
-// {
-// 	char	**str;
-// 	t_env	*tmp;
-// 	int		i;
-	
-// 	tmp = eniv;
-// 	i = 0;
-// 	while(tmp)
-// 	{
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	tmp = eniv;
-// 	str = malloc(sizeof(char *) * i + 1);
-// 	i = 0;
-// 	while(tmp)
-// 	{
-// 		str[i] = ft_strdup(tmp->envir);
-// 		i++;
-// 		tmp = tmp->next;
-// 	}
-// 	str[i] = NULL;
-// 	return(str);
-// }
+int	lent(void)
+{
+	t_env	*tmp;
+	int		i;
+
+	tmp = g_env;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
+void	change_envir(void)
+{
+	int		i;
+	t_env	*tmp;
+
+	i = 0;
+	g_env->envb = malloc(sizeof(char *) * (lent() + 1));
+	tmp = g_env;
+	i = 0;
+	while (tmp)
+	{
+		g_env->envb[i] = ft_strdup(tmp->envir);
+		tmp = tmp->next;
+		i++;
+	}
+	g_env->envb[i] = NULL;
+}
 
 void	catch_sig(int signum)
 {
-	//int fd;
-	
 	if (g_env->crtl_c == 1)
-	{	
-		// g_env->crtl_c = 1;
+	{
 		printf("\n");
 		close(0);
 		g_env->crtl_c = 0;
@@ -55,9 +59,8 @@ void	catch_sig(int signum)
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		rl_redisplay();	
+		rl_redisplay();
 	}
-	
 }
 
 void	get_line(void)

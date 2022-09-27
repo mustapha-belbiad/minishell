@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_cd_fcnt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 14:59:23 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 15:40:46 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:32:28 by ael-kouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,5 @@ void	cd_fcnt(t_cmd *cmd)
 	if (change_env(g_env, "PWD") == 0)
 		return ;
 	free(str);
+	change_envir();
 }
