@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/12 17:41:13 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/28 01:48:14 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ int ft_strcmp2(char *s1, char *s2)
 	
 	if (s1[i] != cmd[0][i])
 	{
-		free(cmd);
+		ft_free(cmd);
 		return (0);
 	}
 	else 
 	{
-		free(cmd);
+		ft_free(cmd);
 		return(1);
 	}
 }

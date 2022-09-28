@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:07:17 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 00:53:25 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/28 04:45:11 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void hola(int sig)
 void	here_doc(char *file)
 {
 	char *str;
-	//char **rr;
+	char *rr;
 	//int i;
 	
 	
@@ -68,8 +68,9 @@ void	here_doc(char *file)
 			}
 			else 
 			{
-				str = ft_strjoin(str, "\n");
-				ft_putstr_fd(str, g_env->fd_hr[1]);
+				rr = ft_strjoin(str, "\n");
+				ft_putstr_fd(rr, g_env->fd_hr[1]);
+				free(rr);
 				free(str);
 			}
 		}

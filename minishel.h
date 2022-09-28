@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishel.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:43:13 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/27 21:31:41 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/28 00:59:21 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	get_line();
 //---------------------------------------------------
 
 //-------- execute ----------------------------------
-void    ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp);
+void    ft_execute(t_cmd *cmd, char **envp);
 int		redi_heredoc(t_cmd *cmd);
 void	run_exection(t_cmd *cmd, int in_fd, int i, int size, char **envp);
 int		ft_lstsizeee(t_cmd *lst);

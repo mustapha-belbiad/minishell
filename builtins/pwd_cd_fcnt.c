@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_cd_fcnt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 14:59:23 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 21:32:28 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/28 00:54:39 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,16 @@ void	pwd_fcnt(t_cmd *cmd)
 void	change_for_pwd(t_env *g_env, char *change)
 {
 	t_env	*tmp;
+	char	*tmp2;
 
 	tmp = g_env;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->envir, "PWD", 3) == 0)
 		{
-			change = ft_strjoin("PWD=", change);
-			tmp->envir = ft_strdup(change);
+			tmp2 = ft_strjoin("PWD=", change);
+			free(tmp->envir);
+			tmp->envir = tmp2;
 			break ;
 		}
 		tmp = tmp->next;
@@ -52,15 +54,17 @@ void	change_for_pwd(t_env *g_env, char *change)
 void	change_for_oldpwd(t_env *g_env, char *change)
 {
 	t_env	*tmp;
-
+	char	*tmp2;
+	
 	change = ft_substr(change, 4, ft_strlen(change));
 	tmp = g_env;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->envir, "OLDPWD", 6) == 0)
 		{
-			change = ft_strjoin("OLDPWD=", change);
-			tmp->envir = ft_strdup(change);
+			tmp2 = ft_strjoin("OLDPWD=", change);
+			free(tmp->envir);
+			tmp->envir = tmp2;
 			break ;
 		}
 		tmp = tmp->next;
@@ -81,7 +85,7 @@ int	change_env(t_env *g_env, char *value)
 			return (0);
 		}
 		change_for_oldpwd(g_env, change);
-		free(change);
+	//	free(change);
 	}
 	else if (ft_strncmp(value, "PWD", 3) == 0)
 	{
@@ -89,10 +93,11 @@ int	change_env(t_env *g_env, char *value)
 		if (getcwd(change, 1024) == NULL)
 		{
 			printf("pwd not found \n");
+			free(change);
 			return (0);
 		}
 		change_for_pwd(g_env, change);
-		free(change);
+		//free(change);
 	}
 	return (1);
 }
@@ -101,6 +106,7 @@ void	cd_fcnt(t_cmd *cmd)
 {
 	char	*str;
 	t_env	*env;
+	char	*tmp2;
 	char	*home;
 
 	if (cmd->file != NULL)
@@ -113,16 +119,16 @@ void	cd_fcnt(t_cmd *cmd)
 		if (home == NULL)
 			return ;
 		str = ft_substr(home, 6, ft_strlen(home));
-		str = ft_strjoin("/", str);
+		tmp2 = ft_strjoin("/", str);
 	}
 	else
-		str = ft_strdup(cmd->cmd[1]);
+		tmp2 = ft_strdup(cmd->cmd[1]);
 	if (change_env(g_env, "OLDPWD") == 0)
 		return ;
-	if (chdir(str) == -1)
+	if (chdir(tmp2) == -1)
 		printf("No such file or directory \n");
 	if (change_env(g_env, "PWD") == 0)
 		return ;
 	free(str);
-	change_envir();
+	free(tmp2);
 }

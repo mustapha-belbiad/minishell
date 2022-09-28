@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_fcnt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 15:46:07 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 21:32:11 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/28 04:36:09 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_check_args2(char **check)
 void	add_to_export(t_cmd *cmd)
 {
 	int	i;
-
+	char *str;
 	if (cmd->cmd[1][0] != '\0')
 	{
 		i = 0;
@@ -62,7 +62,8 @@ void	add_to_export(t_cmd *cmd)
 			if (check_exist(cmd, i) == 1)
 			{
 				ft_check_quot(&cmd);
-				ft_list_addback(&g_env, ft_lstnew(cmd->cmd[i]));
+				str = ft_strdup(cmd->cmd[i]);
+				ft_list_addback(&g_env, ft_lstnew(str));
 			}
 		}
 	}
@@ -99,6 +100,11 @@ void	ft_remove_quot(t_env **cmd)
 
 	sp = ft_split((*cmd)->envir, '"');
 	if (sp == NULL || sp[1] == NULL)
+	{
+		free(sp[0]);
+		free(sp);
 		return ;
-		(*cmd)->envir = ft_strjoin(sp[0], sp[1]);
+	}
+	(*cmd)->envir = ft_strjoin(sp[0], sp[1]);	
+	printf("cmd : ===> %p \n",(*cmd)->envir);
 }

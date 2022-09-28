@@ -30,7 +30,7 @@ SRC = main_parc.c \
 	./execute/file_in.c \
 	./signals/signals.c
 
-FLAGS = -Wall -Wextra -Werror -I/Users/ael-kouc/goinfre/.brew/Cellar/readline/8.1.2/include 
+FLAGS = -Wall -Wextra -Werror -I/Users/mbelbiad/goinfre/.brew/Cellar/readline/8.1.2/include 
 ARG = -o
 
 all : $(NAME)
@@ -39,7 +39,7 @@ all : $(NAME)
 
 $(NAME): $(SRC)
 	@make -C ./libft
-	@$(CC) $(FLAGS) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a -g3 -fsanitize=address -L/Users/ael-kouc/goinfre/.brew/Cellar/readline/8.1.2/lib
+	@$(CC) $(FLAGS) -lreadline $(SRC) $(ARG) minishel ./libft/libft.a -L/Users/mbelbiad/goinfre/.brew/Cellar/readline/8.1.2/lib
 
 
 clean : 

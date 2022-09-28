@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:52:31 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 13:39:07 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/28 04:42:29 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int file_in(t_file *tmp, int j)
         }
         if (j == 0)
         {
-			dup2(in, 0);    
-           close(in);
+		    dup2(in, 0);    
+            close(in);
         }
     }
     else if (tmp->e_type == 7)

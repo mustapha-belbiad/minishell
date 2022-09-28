@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:02:34 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 18:44:41 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/28 04:26:16 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,43 @@ int	ft_check_args(t_cmd *cmd, int i)
 		&& cmd->cmd[i][0] != '_')
 	{
 		printf("not valid \n");
+		ft_free(check);
 		return (0);
 	}
 	if (ft_check_args2(check) == 0)
+	{
+		ft_free(check);
 		return (0);
+	}
+	ft_free(check);
 	return (1);
 }
 
 void	ft_join_quot(t_cmd *tmp, char **sp, int i)
 {
+	char *tmp1;
+	char *tmp2;
+	
+	tmp1 = tmp->cmd[i];
 	if (ft_search(tmp->cmd[i], '=') == 1 && sp[1] == NULL)
-	{
-		tmp->cmd[i] = ft_strjoin(tmp->cmd[i], "\"\"");
-		i++;
+	{	
+		tmp->cmd[i] = ft_strjoin(tmp1, "\"\"");
+		free(tmp1);
 	}
 	else
 	{
-		sp[1] = ft_strjoin("\"", sp[1]);
-		sp[1] = ft_strjoin(sp[1], "\"");
-		sp[1] = ft_strjoin("=", sp[1]);
+		tmp2 = ft_strjoin("\"", sp[1]);
+		free(sp[1]);
+		sp[1] = ft_strjoin(tmp2, "\"");
+		free(tmp2);
+		tmp2 = ft_strjoin("=", sp[1]);
 		free(tmp->cmd[i]);
-		tmp->cmd[i] = ft_strjoin(sp[0], sp[1]);
-		i++;
+		free(sp[1]);
+		tmp->cmd[i] = ft_strjoin(sp[0], tmp2);
+		free(tmp2);
+		free(sp[0]);
 	}
-	ft_free(sp);
+	free(sp);
 }
 
 void	ft_check_quot(t_cmd **cmd)
@@ -70,6 +83,7 @@ void	ft_check_quot(t_cmd **cmd)
 	t_cmd	*tmp;
 	int		i;
 	char	*check;
+	//char	*tmp2;
 
 	i = 1;
 	tmp = (*cmd);
@@ -80,11 +94,21 @@ void	ft_check_quot(t_cmd **cmd)
 		if (sp == NULL || sp[0] == NULL)
 			break ;
 		if (check && check[1] == '=')
+		{
+			free(sp[1]);
 			sp[1] = ft_substr(check, 1, ft_strlen(check));
+		}
 		if ((sp[1] != NULL && sp[1][0] == '"') || sp[1] == NULL)
+		{
 			i++;
+			ft_free(sp);
+		}
 		else
+		{
 			ft_join_quot(tmp, sp, i);
+			i++;
+		}
+		
 	}
 }
 
@@ -114,5 +138,6 @@ int	check_exist(t_cmd *cmd, int i)
 		}
 		tmp = tmp->next;
 	}
+	ft_free(sp);
 	return (1);
 }

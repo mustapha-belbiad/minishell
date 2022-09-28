@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:17:19 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 20:07:52 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/28 04:42:14 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,13 @@ void	run_exection(t_cmd *cmd, int in_fd, int i, int size, char **envp)
 	}	
 }
 
-void     ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
+void     ft_execute(t_cmd *cmd, char **envp)
 {
 	int in_fd;
 	pid_t pid;
 	int i = 0;
 	int size;
-	
-	(void)env;
-	(void)mini;
+
 	size = ft_lstsizeee(cmd);
 	//t_cmd *tmp1;
 	in_fd = -1;
@@ -164,7 +162,7 @@ void     ft_execute(t_cmd *cmd, t_env *env, t_mini *mini, char **envp)
 		
 		}
 		//if (cmd->next == NULL)
-	
+		
 	 }
 	 close(g_env->fd_exec[1]);
 	 close(g_env->fd_exec[0]);

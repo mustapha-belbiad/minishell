@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_parc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-kouc <ael-kouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:47:34 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/27 21:56:06 by ael-kouc         ###   ########.fr       */
+/*   Updated: 2022/09/28 04:20:53 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,17 +116,17 @@ int main(int ac, char **av, char **envp)
     files = NULL;
     mini = malloc(sizeof(t_mini));
     mini->env = get_env(envp);
-
-    eniv = ft_link_env(eniv, mini->env);
     g_env = ft_link_env(eniv, mini->env);
     g_env->ret_val = 0;
     g_env->crtl_c = 0;
     
     int fd ;
     get_line();
+    g_env->envb = get_env(envp);
     while(1)
     {
         // envb = get_linked_ar(eniv);
+        change_envir();
         fd = dup(0);
         str = readline("minishel> ");
         if(str == NULL)
@@ -144,7 +144,7 @@ int main(int ac, char **av, char **envp)
 
             if (cmd != NULL)
             {
-                ft_execute(cmd, eniv, mini, g_env->envb);
+                ft_execute(cmd, g_env->envb);
             }
             
             // if (cmd != NULL && cmd->cmd[0] != NULL)
@@ -197,12 +197,14 @@ int main(int ac, char **av, char **envp)
         //     printf("-------------------------/\n");
         //     tmp1 = tmp1->next;
         // }
-        // free_token(&mini->token);
-        // free_cmd(cmd);
+        free_token(&mini->token);
+        free_cmd(cmd);
         mini->token = NULL;
         cmd = NULL;
         free(str);
         str = 0;
         dup2(fd,0);
+       // ft_free(g_env->envb);
+       system("leaks minishel");
     }
 }
