@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:02:34 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/28 04:26:16 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/29 03:27:04 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int	ft_check_args(t_cmd *cmd, int i)
 
 void	ft_join_quot(t_cmd *tmp, char **sp, int i)
 {
-	char *tmp1;
-	char *tmp2;
-	
+	char	*tmp1;
+	char	*tmp2;
+
 	tmp1 = tmp->cmd[i];
 	if (ft_search(tmp->cmd[i], '=') == 1 && sp[1] == NULL)
 	{	
@@ -83,11 +83,10 @@ void	ft_check_quot(t_cmd **cmd)
 	t_cmd	*tmp;
 	int		i;
 	char	*check;
-	//char	*tmp2;
 
-	i = 1;
+	i = 0;
 	tmp = (*cmd);
-	while (tmp->cmd[i])
+	while (tmp->cmd[++i])
 	{
 		check = ft_strchr(tmp->cmd[i], '=');
 		sp = ft_split(tmp->cmd[i], '=');
@@ -99,16 +98,9 @@ void	ft_check_quot(t_cmd **cmd)
 			sp[1] = ft_substr(check, 1, ft_strlen(check));
 		}
 		if ((sp[1] != NULL && sp[1][0] == '"') || sp[1] == NULL)
-		{
-			i++;
 			ft_free(sp);
-		}
 		else
-		{
 			ft_join_quot(tmp, sp, i);
-			i++;
-		}
-		
 	}
 }
 
@@ -128,12 +120,10 @@ int	check_exist(t_cmd *cmd, int i)
 			if (sp[1] == NULL)
 			{
 				ft_free(sp);
+				g_env->ret_val = 1;
 				return (0);
 			}
-			free(tmp->envir);
-			ft_check_quot(&cmd);
-			tmp->envir = ft_strdup(cmd->cmd[i]);
-			ft_free(sp);
+			check_exist2(tmp, cmd, sp, i);
 			return (0);
 		}
 		tmp = tmp->next;

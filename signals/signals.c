@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 07:01:02 by ael-kouc          #+#    #+#             */
-/*   Updated: 2022/09/28 04:14:08 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:29:08 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ void	change_envir(void)
 	int		i;
 	t_env	*tmp;
 	char	**tmp1;
- 
 
 	i = 0;
 	tmp1 = g_env->envb;
-	if (g_env->envb != NULL)
+	if (g_env->envb != NULL && g_env != NULL)
 		ft_free(g_env->envb);
 	g_env->envb = malloc(sizeof(char *) * (lent() + 1));
 	tmp = g_env;
@@ -48,7 +47,6 @@ void	change_envir(void)
 		i++;
 	}
 	g_env->envb[i] = NULL;
-	
 }
 
 void	catch_sig(int signum)

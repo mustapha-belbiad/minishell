@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 18:52:48 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/27 20:03:29 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:47:09 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	echo_fcnt(t_cmd *cmd)
 	if (cmd->cmd[1] == NULL)
 	{
 		ft_putstr_fd("\n", fd);
+		g_env->ret_val = 0;
 		return ;
 	}
 	i = 1;
@@ -75,4 +76,5 @@ void	echo_fcnt(t_cmd *cmd)
 			break ;
 	}
 	ft_echo_exec(cmd, i, fd);
+	g_env->ret_val = 0;
 }

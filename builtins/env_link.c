@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:41:03 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/28 01:48:14 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/29 03:18:58 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 t_env	*ft_lstnew(void *env)
 {
 	t_env	*node;
-	node = (t_env*)malloc(sizeof(t_env));
-    if (!node)
+
+	node = (t_env *)malloc(sizeof(t_env));
+	if (!node)
 	{
 		write(2, "Eroor\n", 7);
 		return (NULL);
@@ -29,22 +30,22 @@ t_env	*ft_lstnew(void *env)
 void	ft_list_addback(t_env **lst, t_env *new)
 {
 	t_env	*tmp;
-	
-    if (*lst == NULL)
-        *lst = new;
-    else
-    {
-	    tmp = (*lst);
-	    while (tmp->next != NULL)
-		    tmp = tmp->next;
-	    tmp->next = new;
-    }
+
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		tmp = (*lst);
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 int	ft_lstsizeee(t_cmd *lst)
 {
 	int	count;
-	
+
 	count = 0;
 	while (lst)
 	{
@@ -56,44 +57,38 @@ int	ft_lstsizeee(t_cmd *lst)
 
 void	*ft_link_env(t_env *envi, char **env)
 {
-	int i;
+	int	i;
 
 	i = -1;
-    envi = NULL;
+	envi = NULL;
 	while (env[++i])
 		ft_list_addback(&envi, ft_lstnew(env[i]));
-        
-    // while (envi->next != NULL)
-    // {
-    //     printf("%s \n", envi->envir);
-    //     envi = envi->next;
-    // }
-    return(envi);
+	return (envi);
 }
 
-int ft_strcmp2(char *s1, char *s2)
+int	ft_strcmp2(char *s1, char *s2)
 {
-	int i;
+	int		i;
+	char	**cmd;
 
 	i = 0;
-	char **cmd = ft_split(s2, '=');
+	cmd = ft_split(s2, '=');
 	if (cmd == NULL)
 		return (0);
-	while(s1[i] && cmd[0][i])
+	while (s1[i] && cmd[0][i])
 	{
-		if(s1[i] != cmd[0][i])
-			break;
+		if (s1[i] != cmd[0][i])
+			break ;
 		i++;
 	}
-	
 	if (s1[i] != cmd[0][i])
 	{
 		ft_free(cmd);
 		return (0);
 	}
-	else 
+	else
 	{
 		ft_free(cmd);
-		return(1);
+		return (1);
 	}
 }

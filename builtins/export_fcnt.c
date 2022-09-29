@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 15:46:07 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/28 04:36:09 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/29 03:19:48 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	ft_check_args2(char **check)
 
 void	add_to_export(t_cmd *cmd)
 {
-	int	i;
-	char *str;
+	int		i;
+	char	*str;
+
 	if (cmd->cmd[1][0] != '\0')
 	{
 		i = 0;
@@ -64,8 +65,14 @@ void	add_to_export(t_cmd *cmd)
 				ft_check_quot(&cmd);
 				str = ft_strdup(cmd->cmd[i]);
 				ft_list_addback(&g_env, ft_lstnew(str));
+				g_env->ret_val = 0;
 			}
 		}
+	}
+	if (cmd->cmd[1][0] == '\0')
+	{
+		printf("not a valid identifier \n");
+		g_env->ret_val = 1;
 	}
 	change_envir();
 }
@@ -89,6 +96,7 @@ void	export_fcnt(t_cmd *cmd)
 			ft_putstr_fd("\n", fd);
 			tmp = tmp->next;
 		}
+		g_env->ret_val = 0;
 	}
 	else
 		add_to_export(cmd);
@@ -105,6 +113,5 @@ void	ft_remove_quot(t_env **cmd)
 		free(sp);
 		return ;
 	}
-	(*cmd)->envir = ft_strjoin(sp[0], sp[1]);	
-	printf("cmd : ===> %p \n",(*cmd)->envir);
+	(*cmd)->envir = ft_strjoin(sp[0], sp[1]);
 }

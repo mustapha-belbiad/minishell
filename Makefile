@@ -25,7 +25,9 @@ SRC = main_parc.c \
 	./builtins/export2_fcnt.c \
 	./builtins/unset_fcnt.c \
 	./builtins/echo_fcnt.c \
+	./builtins/extra_file_norm.c \
 	./execute/ft_execute.c \
+	./execute/ft_execute2.c \
 	./execute/redi_here.c \
 	./execute/file_in.c \
 	./signals/signals.c

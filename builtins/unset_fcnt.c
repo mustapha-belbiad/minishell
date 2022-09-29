@@ -6,7 +6,7 @@
 /*   By: mbelbiad <mbelbiad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 18:32:34 by mbelbiad          #+#    #+#             */
-/*   Updated: 2022/09/28 04:40:06 by mbelbiad         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:10:03 by mbelbiad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_unset_remove(t_env *tmp1, t_cmd *cmd, int i)
 	t_env	*tmp2;
 	t_env	*head;
 
-	tmp2= NULL;
+	tmp2 = NULL;
 	while (tmp1 != NULL)
 	{
 		if (ft_strcmp(cmd->cmd[i], tmp1->envir) == 1)
@@ -50,12 +50,13 @@ void	ft_unset_remove(t_env *tmp1, t_cmd *cmd, int i)
 			tmp2 = tmp1;
 			head->next = tmp2->next;
 			tmp1 = g_env;
+			free(tmp2->envir);
+			free(tmp2);
 			break ;
 		}
 		head = tmp1;
 		tmp1 = tmp1->next;
 	}
-	free(tmp2);
 	change_envir();
 }
 
@@ -74,18 +75,15 @@ void	unset_fcnt(t_cmd *cmd)
 		if (ft_check_unset(cmd->cmd[i]) == 0)
 		{
 			printf("%s : not a valid identifier \n", cmd->cmd[i]);
+			g_env->ret_val = 1;
 			return ;
 		}
 		tmp1 = g_env;
-		if (ft_strcmp(cmd->cmd[i], tmp1->envir) == 1)
-		{
-			tmp1 = g_env->next;
-			g_env = tmp1;
-			change_envir();
+		if (first_arg(cmd, tmp1, i) == 0)
 			return ;
-		}
 		ft_unset_remove(tmp1, cmd, i);
 	}
+	g_env->ret_val = 0;
 }
 
 int	ft_check_env(char *env)
@@ -126,4 +124,5 @@ void	env_fcnt(t_cmd *cmd)
 			tmp = tmp->next;
 		}
 	}
+	g_env->ret_val = 0;
 }
